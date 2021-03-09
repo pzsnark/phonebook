@@ -16,5 +16,3 @@ print(conn.entries)
 
 # for entry in conn.entries:
 #     print(entry.cn, entry.company)
-
-# '(&(objectCategory=Person)(!(UserAccountControl:1.2.840.113556.1.4.803:=2)))'
