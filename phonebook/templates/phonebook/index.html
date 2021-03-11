@@ -3,16 +3,16 @@
 {% block title %}Телефонная книга{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="wrapper header">
-        <div class="displayname center">ФИО</div>
-        <div class="company center">Компания</div>
-        <div class="title center">Должность</div>
-        <div class="office center">Рабочее место</div>
-        <div class="phone center">Телефон</div>
-        <div class="mobile center">Мобильный</div>
-        <div class="mail center">Почта</div>
-    </div>
+<header>
+    <div class="displayname center">ФИО</div>
+    <div class="company center">Компания</div>
+    <div class="title center">Должность</div>
+    <div class="office center">Рабочее место</div>
+    <div class="phone center">Телефон</div>
+    <div class="mobile center">Мобильный</div>
+    <div class="mail center">Почта</div>
+</header>
+<main>
     {% if conn %}
         {% for entry in conn %}
             <div class="wrapper">
@@ -79,5 +79,5 @@
     {% else %}
         Констекст не найден
     {% endif %}
-</div>
+</main>
 {% endblock %}

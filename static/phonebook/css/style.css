@@ -2,11 +2,19 @@ body {
 	font-family: Arial, sans-serif;
 	font-size: 14px;
 	line-height: 20px;
+    width: 1370px;
+    margin: 0 auto;
 }
 
-.container {
-	width: 1370px;
-    margin: 0 auto;
+header {
+    display: flex;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+}
+
+main {
+    margin-top: 20px;
 }
 
 .wrapper {
@@ -59,4 +67,8 @@ footer {
 
 .header {
     position: fixed;
+}
+
+.margin-top {
+    margin-top: 20px;
 }
