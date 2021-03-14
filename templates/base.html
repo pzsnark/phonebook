@@ -7,11 +7,25 @@
     <link rel="stylesheet" href="{% static 'phonebook/css/style.css' %}">
 </head>
 <body>
+    <div class="aboard">
+        <ul>
+            <li><a href="{% url 'abz' %}">ОблДорСтрой №1</a></li>
+            <li><a href="{% url 'abz' %}">АвтоВолгаСтрой</a></li>
+            <li><a href="{% url 'abz' %}">Авангард</a></li>
+            <li><a href="{% url 'abz' %}">АБЗ №1</a></li>
+            <li><a href="{% url 'abz' %}">СМУ Тольятти</a></li>
+            <li><a href="{% url 'abz' %}">СМУ Самара</a></li>
+            <li><a href="{% url 'abz' %}">ПНЛ</a></li>
+            <li><a href="{% url 'abz' %}">Перспектива</a></li>
+            <li><a href="{% url 'abz' %}">Волга-Проект</a></li>
+            <li><a href="{% url 'query' %}">Query</a></li>
+        </ul>
+    </div>
 {% block content %}
 
 {% endblock %}
 <footer>
-    <div>Developed by Филипппов Константин</div>
+    <div>Developed by Филиппов Константин</div>
 </footer>
 </body>
 </html>

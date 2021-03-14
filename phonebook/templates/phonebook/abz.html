@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Телефонная книга{% endblock %}
+{% block title %}Телефонная книга АБЗ #1{% endblock %}
 
 {% block content %}
 <header>
@@ -13,8 +13,8 @@
     <div class="mail center">Почта</div>
 </header>
 <main>
-    {% if entries %}
-        {% for entry in entries %}
+    {% if abz_list %}
+        {% for entry in abz_list %}
             <div class="wrapper">
                 <div class="displayname">
                     {% if entry.displayname == None %}
@@ -24,27 +24,7 @@
                     {{ entry.displayname }}
                 </div>
                 <div class="company">
-                    {% if entry.company == 'ODS' %}
-                        ОблДорСтрой
-                    {% elif entry.company == 'AVS' %}
-                        АвтоВолгаСтрой
-                    {% elif entry.company == 'AVN' %}
-                        Авангард
-                    {% elif entry.company == 'ABZ' %}
                         АБЗ №1
-                    {% elif entry.company == 'SMT' %}
-                        СМУ Тольятти
-                    {% elif entry.company == 'SMS' %}
-                        СМУ Самара
-                    {% elif entry.company == 'PNL' %}
-                        ПНЛ
-                    {% elif entry.company == 'PRS' %}
-                        Перспектива
-                    {% elif entry.company == 'VPR' %}
-                        Волга-Проект
-                    {% else %}
-                        {{ entry.company }}
-                    {% endif %}
                 </div>
                 <div class="title">
                     {% if entry.title == None %}
