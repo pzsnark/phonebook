@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15fa77b6-d6f6-4b4e-98d2-2aa2011aa39d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/phonebook/templates/phonebook/abz.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phonebook/templates/phonebook/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/phonebook/templates/phonebook/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/phonebook/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/phonebook/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/phonebook/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/phonebook/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/phonebook/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/phonebook/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +33,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/phonebook/templates/phonebook" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -148,6 +145,13 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="380" y="165" key="#Notifications" timestamp="1615741489966">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="380" y="165" key="#Notifications/0.0.1280.680@0.0.1280.680" timestamp="1615741489966" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

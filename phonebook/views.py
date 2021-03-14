@@ -2,7 +2,6 @@ import ldap3
 from ldap3 import Connection, SUBTREE
 from .conf import *
 from django.shortcuts import render
-from django.http import HttpResponse
 
 
 def server_request():
@@ -37,13 +36,14 @@ def abz(request):
     return render(request, 'phonebook/index.html', context)
 
 
-def query(request):
-    entries = {}
+def query(request, company):
+    entries = []
     for entry in server_request():
-        entries.update({entry.company: list(entry.company).append(entry.company)})
+        if entry.company == company:
+            entries.append(entry)
     context = {
         'entries': entries
     }
     return render(request, 'phonebook/index.html', context)
 
-# найти все уникальные вхождения в entrie.company из них формировать список фильтра
+# найти все уникальные вхождения в entry.company из них формировать список фильтра
