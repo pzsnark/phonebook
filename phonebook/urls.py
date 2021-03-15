@@ -2,9 +2,9 @@ from django.urls import path
 
 from . import views
 
+app_name = "phonebook"
+
 urlpatterns = [
     path('', views.index, name='index'),
-    path('abz', views.abz, name='abz'),
-    path('query', views.query, name='query'),
-    path('<str:company>', views.query, name='company'),
+    path('<str:company>', views.quest, name='company'),
 ]

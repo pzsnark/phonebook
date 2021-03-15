@@ -25,22 +25,12 @@ def index(request):
     return render(request, 'phonebook/index.html', context)
 
 
-def abz(request):
-    entries = []
-    for entry in server_request():
-        if entry.company == 'ABZ':
-            entries.append(entry)
-    context = {
-        'entries': entries
-    }
-    return render(request, 'phonebook/index.html', context)
-
-
-def query(request, company):
+def quest(request, company):
     entries = []
     for entry in server_request():
         if entry.company == company:
             entries.append(entry)
+    entries.sort()
     context = {
         'entries': entries
     }

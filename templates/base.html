@@ -9,16 +9,15 @@
 <body>
     <div class="aboard">
         <ul>
-            <li><a href="{% url 'query' ABZ %}">ОблДорСтрой №1</a></li>
-            <li><a href="{% url 'abz' %}">АвтоВолгаСтрой</a></li>
-            <li><a href="{% url 'abz' %}">Авангард</a></li>
-            <li><a href="{% url 'abz' %}">АБЗ №1</a></li>
-            <li><a href="{% url 'abz' %}">СМУ Тольятти</a></li>
-            <li><a href="{% url 'abz' %}">СМУ Самара</a></li>
-            <li><a href="{% url 'abz' %}">ПНЛ</a></li>
-            <li><a href="{% url 'abz' %}">Перспектива</a></li>
-            <li><a href="{% url 'abz' %}">Волга-Проект</a></li>
-            <li><a href="{% url 'query' %}">Query</a></li>
+            <li><a href="{% url 'phonebook:company' company='ODS' %}">ОблДорСтрой №1</a></li>
+            <li><a href="{% url 'phonebook:company' company='AVS' %}">АвтоВолгаСтрой</a></li>
+            <li><a href="{% url 'phonebook:company' company='AVN' %}">Авангард</a></li>
+            <li><a href="{% url 'phonebook:company' company='ABZ' %}">АБЗ №1</a></li>
+            <li><a href="{% url 'phonebook:company' company='SMT' %}">СМУ Тольятти</a></li>
+            <li><a href="{% url 'phonebook:company' company='SMS' %}">СМУ Самара</a></li>
+            <li><a href="{% url 'phonebook:company' company='PNL' %}">ПНЛ</a></li>
+            <li><a href="{% url 'phonebook:company' company='PRS' %}">Перспектива</a></li>
+            <li><a href="{% url 'phonebook:company' company='VPR' %}">Волга-Проект</a></li>
         </ul>
     </div>
 {% block content %}
