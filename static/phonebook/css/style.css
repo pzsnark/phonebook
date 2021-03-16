@@ -41,7 +41,9 @@ a {
 
 .wrapper:hover {
     background: rgba(0, 0, 0, 0.1);
+    transition-duration: 0.2s;
 }
+
 
 .company {
     min-width: 150px;
