@@ -7,11 +7,24 @@
     <link rel="stylesheet" href="{% static 'phonebook/css/style.css' %}">
 </head>
 <body>
+    <div class="aboard">
+        <ul>
+            <li><a href="{% url 'phonebook:company' company='ODS' %}">ОблДорСтрой №1</a></li>
+            <li><a href="{% url 'phonebook:company' company='AVS' %}">АвтоВолгаСтрой</a></li>
+            <li><a href="{% url 'phonebook:company' company='AVN' %}">Авангард</a></li>
+            <li><a href="{% url 'phonebook:company' company='ABZ' %}">АБЗ №1</a></li>
+            <li><a href="{% url 'phonebook:company' company='SMT' %}">СМУ Тольятти</a></li>
+            <li><a href="{% url 'phonebook:company' company='SMS' %}">СМУ Самара</a></li>
+            <li><a href="{% url 'phonebook:company' company='PNL' %}">ПНЛ</a></li>
+            <li><a href="{% url 'phonebook:company' company='PRS' %}">Перспектива</a></li>
+            <li><a href="{% url 'phonebook:company' company='VPR' %}">Волга-Проект</a></li>
+        </ul>
+    </div>
 {% block content %}
 
 {% endblock %}
 <footer>
-    <div>Developed by Филипппов Константин</div>
+    <div>Developed by Филиппов Константин</div>
 </footer>
 </body>
 </html>

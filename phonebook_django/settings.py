@@ -33,7 +33,6 @@ ALLOWED_HOSTS = ['10.63.41.57']
 
 INSTALLED_APPS = [
     'phonebook.apps.PhonebookConfig',
-    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -1,7 +1,7 @@
 body {
-	font-family: Arial, sans-serif;
-	font-size: 14px;
-	line-height: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
     width: 1370px;
     margin: 0 auto;
 }
@@ -11,10 +11,24 @@ header {
     position: sticky;
     top: 0;
     background-color: #fff;
+    border-bottom: rgba(0, 0, 0, 0.1) 1px solid;
 }
 
 main {
     margin-top: 20px;
+}
+
+ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
 }
 
 .wrapper {
@@ -27,7 +41,9 @@ main {
 
 .wrapper:hover {
     background: rgba(0, 0, 0, 0.1);
+    transition-duration: 0.2s;
 }
+
 
 .company {
     min-width: 150px;
@@ -58,6 +74,8 @@ footer {
     height: 100px;
     text-align: center;
     line-height: 100px;
+    border-top: rgba(0, 0, 0, 0.1) 1px solid;
+    margin-top: 20px;
 }
 
 
@@ -71,4 +89,15 @@ footer {
 
 .margin-top {
     margin-top: 20px;
+}
+
+.aboard {
+    min-width: 90px;
+    min-height: 14px;
+    position: fixed;
+    top: 30px;
+    left: 5px;
+    border: rgba(0, 0, 0, 0.1) 1px solid;
+    padding: 5px 5px;
+    background: rgba(0, 0, 0, 0.1)
 }
