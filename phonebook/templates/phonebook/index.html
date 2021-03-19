@@ -46,10 +46,10 @@
                         {{ entry.company }}
                     {% endif %}
                 </div>
-                <div class="title">
+                <div class="title" title="{{ entry.title }}">
                     {% if entry.title == None %}
                     {% else %}
-                        {{ entry.title }}
+                        {{ entry.title|truncatechars:20 }}
                     {% endif %}
                 </div>
                 <div class="company">
