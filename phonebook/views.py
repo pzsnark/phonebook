@@ -34,6 +34,6 @@ def quest(request, company):
     context = {
         'entries': entries
     }
-    return render(request, 'phonebook/index.html', context)
+    return render(request, 'phonebook/company.html', context)
 
 # найти все уникальные вхождения в entry.company из них формировать список фильтра
