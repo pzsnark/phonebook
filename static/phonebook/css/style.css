@@ -2,8 +2,6 @@ body {
     font-family: Arial, sans-serif;
     font-size: 14px;
     line-height: 20px;
-    width: 1370px;
-    margin: 0 auto;
 }
 
 header {
@@ -12,10 +10,12 @@ header {
     top: 0;
     background-color: #fff;
     border-bottom: rgba(0, 0, 0, 0.1) 1px solid;
+    width: 1220px;
+    margin: 0 auto;
 }
 
 main {
-    margin-top: 20px;
+    min-height: 600px;
 }
 
 ul {
@@ -42,10 +42,8 @@ a:hover {
 
 .wrapper {
     display: flex;
-}
-
-.displayname {
-    min-width: 300px;
+    margin: 0 auto;
+    width: 1220px;
 }
 
 .wrapper:hover {
@@ -53,6 +51,9 @@ a:hover {
     transition-duration: 0.2s;
 }
 
+.displayname {
+    min-width: 300px;
+}
 
 .company {
     min-width: 150px;

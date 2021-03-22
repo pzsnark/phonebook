@@ -6,7 +6,6 @@
 {% block content %}
 <header>
     <div class="displayname center">ФИО</div>
-    <div class="company center">Компания</div>
     <div class="title center">Должность</div>
     <div class="office center">Рабочее место</div>
     <div class="phone center">Телефон</div>
@@ -23,29 +22,6 @@
                     {% else %}
                     {% endif %}
                     {{ entry.displayname }}
-                </div>
-                <div class="company">
-                    {% if entry.company == 'ODS' %}
-                        ОблДорСтрой
-                    {% elif entry.company == 'AVS' %}
-                        АвтоВолгаСтрой
-                    {% elif entry.company == 'AVN' %}
-                        Авангард
-                    {% elif entry.company == 'ABZ' %}
-                        АБЗ №1
-                    {% elif entry.company == 'SMT' %}
-                        СМУ Тольятти
-                    {% elif entry.company == 'SMS' %}
-                        СМУ Самара
-                    {% elif entry.company == 'PNL' %}
-                        ПНЛ
-                    {% elif entry.company == 'PRS' %}
-                        Перспектива
-                    {% elif entry.company == 'VPR' %}
-                        Волга-Проект
-                    {% else %}
-                        {{ entry.company }}
-                    {% endif %}
                 </div>
                 <div class="title" title="{{ entry.title }}">
                     {% if entry.title == None %}
