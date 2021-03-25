@@ -23,9 +23,6 @@ def server_request():
 
 
 entries = server_request()
-print(sorted(entries, key=lambda x: x.company))
 print(type(entries))
 for entry in entries:
     print(entry)
-
-# поискать __lt__ в классе

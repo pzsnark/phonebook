@@ -10,7 +10,7 @@ header {
     top: 0;
     background-color: #fff;
     border-bottom: rgba(0, 0, 0, 0.1) 1px solid;
-    width: 1220px;
+    width: 1320px;
     margin: 0 auto;
 }
 
@@ -43,7 +43,7 @@ a:hover {
 .wrapper {
     display: flex;
     margin: 0 auto;
-    width: 1220px;
+    width: 1320px;
 }
 
 .wrapper:hover {
@@ -76,12 +76,12 @@ a:hover {
 }
 
 .mail {
-    min-width: 200px;
+    min-width: 300px;
 }
 
 footer {
     display: block;
-    width: 1220px;
+    width: 1320px;
     text-align: center;
     border-top: rgba(0, 0, 0, 0.1) 1px solid;
     margin: 0 auto;

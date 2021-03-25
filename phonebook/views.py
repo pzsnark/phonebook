@@ -19,8 +19,10 @@ def server_request():
 
 
 def index(request):
+    entries = server_request()
+    entries.sort()
     context = {
-        'entries': server_request()
+        'entries': entries
     }
     return render(request, 'phonebook/index.html', context)
 
