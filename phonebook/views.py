@@ -24,6 +24,7 @@ def index(request):
     context = {
         'entries': entries
     }
+    print(len(entries))
     return render(request, 'phonebook/index.html', context)
 
 
@@ -38,4 +39,3 @@ def quest(request, company):
     }
     return render(request, 'phonebook/company.html', context)
 
-# найти все уникальные вхождения в entry.company из них формировать список фильтра
