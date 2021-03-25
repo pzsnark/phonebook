@@ -1,7 +1,11 @@
 import ldap3
 from ldap3 import Connection, SUBTREE
-from .conf import *
 from django.shortcuts import render
+
+AD_SERVER = 'dc2.gk.local'
+AD_USER = 'ldap-bot@gk.local'
+AD_PASSWORD = '12345678'
+AD_SEARCH_TREE = 'dc=gk,dc=local'
 
 
 def server_request():
@@ -18,24 +22,7 @@ def server_request():
     return conn.entries
 
 
-def index(request):
-    entries = server_request()
-    entries.sort()
-    context = {
-        'entries': entries
-    }
-    return render(request, 'phonebook/index.html', context)
-
-
-def quest(request, company):
-    entries = []
-    for entry in server_request():
-        if entry.company == company:
-            entries.append(entry)
-    entries.sort()
-    context = {
-        'entries': entries
-    }
-    return render(request, 'phonebook/company.html', context)
-
-# найти все уникальные вхождения в entry.company из них формировать список фильтра
+entries = server_request()
+print(type(entries))
+for entry in entries:
+    print(entry)
