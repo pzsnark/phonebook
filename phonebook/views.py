@@ -44,5 +44,5 @@ def quest(request, company):
 
 @csrf_exempt  # (Allows file download with POST requests, can be omitted)
 def book_xml(request):
-    fsock = open("/var/www/http/book/book.xml", "rb")
+    fsock = open("/var/www/html/book/book.xml", "rb")
     return HttpResponse(fsock)
