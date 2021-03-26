@@ -1,4 +1,6 @@
 import ldap3
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from ldap3 import Connection, SUBTREE
 from .conf import *
 from django.shortcuts import render
@@ -39,3 +41,8 @@ def quest(request, company):
     }
     return render(request, 'phonebook/company.html', context)
 
+
+@csrf_exempt  # (Allows file download with POST requests, can be omitted)
+def book_xml(request, name):
+    fsock = open("/var/www/http/book/book.xml", "rb")
+    return HttpResponse(fsock)
