@@ -25,7 +25,8 @@ def server_request():
 class Employee:
     """Запись из Active Directory (Person)"""
 
-    def __init__(self, account_name, display_name, company, title, department, office, phone, mobile, email, last_logon):
+    def __init__(self,
+                 account_name, display_name, company, title, department, office, phone, mobile, email, last_logon):
         self._account_name = account_name
         self._display_name = display_name
         self._company = company
@@ -43,11 +44,11 @@ class Employee:
     # def __eq__(self, other):
     #     return self.account_name == other.account_name
 
-    def __lt__(self, other):
-        return self.account_name < other.account_name
-
+    # def __lt__(self, other):
+    #     return self.display_name < other.display_name
+    #
     # def __gt__(self, other):
-    #     return self.account_name > other.account_name
+    #     return self.display_name > other.display_name
 
     @property
     def account_name(self):
@@ -106,7 +107,7 @@ class EmployeeList:
 
     def company(self, company):
         filter_company = []
-        if company == 'All':
+        if company == 'all':
             return self.employee_list
         else:
             for entry in self.employee_list:
@@ -115,29 +116,28 @@ class EmployeeList:
             return filter_company
 
     def is_sorting(self):
-        employee_list_sort = sorted(self.employee_list)
-        return employee_list_sort
+        return self.employee_list.sort(key=lambda x: x.company)
 
 
 def transfer(entries):
     employers = EmployeeList()
     for entry in entries:
         employers.register = (Employee(
-            account_name=entry.sAMAccountName,
-            display_name=entry.displayName,
-            company=entry.company,
-            title=entry.title,
-            department=entry.department,
-            office=entry.physicalDeliveryOfficeName,
-            phone=entry.telephoneNumber,
-            mobile=entry.mobile,
-            email=entry.mail,
-            last_logon=entry.lastLogon
+            account_name=str(entry.sAMAccountName),
+            display_name=str(entry.displayName),
+            company=str(entry.company),
+            title=str(entry.title),
+            department=str(entry.department),
+            office=str(entry.physicalDeliveryOfficeName),
+            phone=str(entry.telephoneNumber),
+            mobile=str(entry.mobile),
+            email=str(entry.mail),
+            last_logon=str(entry.lastLogon)
         ))
     return employers
 
 
-def test2(request, company='All'):
+def test2(request, company='all'):
     employers = transfer(server_request())
     employers.is_sorting()
     context = {

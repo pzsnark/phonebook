@@ -18,7 +18,7 @@
         {% for entry in entries %}
             <div class="wrapper">
                 <div class="displayname">
-                    {% if entry.display_name == None %}
+                    {% if entry.display_name == '[]' %}
                         Не определено
                     {% else %}
                     {% endif %}
@@ -48,31 +48,31 @@
                     {% endif %}
                 </div>
                 <div class="title" title="{{ entry.title }}">
-                    {% if entry.title == None %}
+                    {% if entry.title == '[]' %}
                     {% else %}
                         {{ entry.title|truncatechars:20 }}
                     {% endif %}
                 </div>
                 <div class="company">
-                    {% if entry.office == None %}
+                    {% if entry.office == '[]' %}
                     {% else %}
                         {{ entry.office }}
                     {% endif %}
                 </div>
                 <div class="phone">
-                    {% if entry.phone == None %}
+                    {% if entry.phone == '[]' %}
                     {% else %}
                         {{ entry.phone }}
                     {% endif %}
                 </div>
                 <div class="mobile">
-                    {% if entry.mobile == None %}
+                    {% if entry.mobile == '[]' %}
                     {% else %}
                         {{ entry.mobile|format_mobile }}
                     {% endif %}
                 </div>
                 <div class="mail">
-                    {% if entry.email == None %}
+                    {% if entry.email == '[]' %}
                     {% else %}
                         {{ entry.email }}
                     {% endif %}
