@@ -10,7 +10,7 @@ header {
     top: 0;
     background-color: #fff;
     border-bottom: rgba(0, 0, 0, 0.1) 1px solid;
-    width: 1320px;
+    width: 1520px;
     margin: 0 auto;
 }
 
@@ -43,7 +43,7 @@ a:hover {
 .wrapper {
     display: flex;
     margin: 0 auto;
-    width: 1320px;
+    width: 1520px;
 }
 
 .wrapper:hover {
@@ -85,7 +85,7 @@ a:hover {
 
 footer {
     display: block;
-    width: 1320px;
+    width: 1520px;
     text-align: center;
     border-top: rgba(0, 0, 0, 0.1) 1px solid;
     margin: 0 auto;
