@@ -5,24 +5,24 @@
 
 {% block content %}
 <header>
-    <div class="displayname center"><a href="{{ request.path }}?sort=display_name">ФИО</a></div>
-    <div class="company center"><a href="{{ request.path }}?sort=company">Компания</a></div>
-    <div class="title center"><a href="{{ request.path }}?sort=title">Должность</a></div>
-    <div class="office center"><a href="{{ request.path }}?sort=office">Рабочее место</a></div>
-    <div class="phone center"><a href="{{ request.path }}?sort=phone">Телефон</a></div>
-    <div class="mobile center"><a href="{{ request.path }}?sort=mobile">Мобильный</a></div>
-    <div class="mail center"><a href="{{ request.path }}?sort=email">Почта</a></div>
+    <div class="displayname center">ФИО</div>
+    <div class="company center">Компания</div>
+    <div class="title center">Должность</div>
+    <div class="office center">Рабочее место</div>
+    <div class="phone center">Телефон</div>
+    <div class="mobile center">Мобильный</div>
+    <div class="mail center">Почта</div>
 </header>
 <main>
     {% if entries %}
         {% for entry in entries %}
             <div class="wrapper">
                 <div class="displayname">
-                    {% if entry.display_name == '[]' %}
+                    {% if entry.displayname == None %}
                         Не определено
                     {% else %}
                     {% endif %}
-                    {{ entry.display_name }}
+                    {{ entry.displayname }}
                 </div>
                 <div class="company">
                     {% if entry.company == 'ODS' %}
@@ -48,39 +48,39 @@
                     {% endif %}
                 </div>
                 <div class="title" title="{{ entry.title }}">
-                    {% if entry.title == '[]' %}
+                    {% if entry.title == None %}
                     {% else %}
                         {{ entry.title|truncatechars:20 }}
                     {% endif %}
                 </div>
                 <div class="company">
-                    {% if entry.office == '[]' %}
+                    {% if entry.physicalDeliveryOfficeName == None %}
                     {% else %}
-                        {{ entry.office }}
+                        {{ entry.physicalDeliveryOfficeName }}
                     {% endif %}
                 </div>
                 <div class="phone">
-                    {% if entry.phone == '[]' %}
+                    {% if entry.telephoneNumber == None %}
                     {% else %}
-                        {{ entry.phone }}
+                        {{ entry.telephoneNumber }}
                     {% endif %}
                 </div>
                 <div class="mobile">
-                    {% if entry.mobile == '[]' %}
+                    {% if entry.mobile == None %}
                     {% else %}
                         {{ entry.mobile|format_mobile }}
                     {% endif %}
                 </div>
                 <div class="mail">
-                    {% if entry.email == '[]' %}
+                    {% if entry.mail == None %}
                     {% else %}
-                        {{ entry.email }}
+                        {{ entry.mail }}
                     {% endif %}
                 </div>
             </div>
         {% endfor %}
     {% else %}
-    <div class="wrapper">Контекст не найден</div>
+        Контекст не найден
     {% endif %}
     <br>
     <div class="wrapper">Всего записей: {{ entries|length }}</div>
