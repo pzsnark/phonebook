@@ -63,6 +63,10 @@ a:hover {
     min-width: 200px;
 }
 
+.department {
+    min-width: 200px;
+}
+
 .office {
     min-width: 150px;
 }
