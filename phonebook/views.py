@@ -155,23 +155,23 @@ def index(request, company='all'):
     return render(request, 'phonebook/index.html', context)
 
 
-def index_old(request):
-    entries = server_request()
-    entries.sort()
-    context = {
-        'entries': entries
-    }
-    print(len(entries))
-    return render(request, 'phonebook/index_old.html', context)
-
-
-def filter_by_company(request, company):
-    entries = []
-    for entry in server_request():
-        if entry.company == company:
-            entries.append(entry)
-    entries.sort()
-    context = {
-        'entries': entries
-    }
-    return render(request, 'phonebook/company.html', context)
+# def index_old(request):
+#     entries = server_request()
+#     entries.sort()
+#     context = {
+#         'entries': entries
+#     }
+#     print(len(entries))
+#     return render(request, 'phonebook/index_old.html', context)
+#
+#
+# def filter_by_company(request, company):
+#     entries = []
+#     for entry in server_request():
+#         if entry.company == company:
+#             entries.append(entry)
+#     entries.sort()
+#     context = {
+#         'entries': entries
+#     }
+#     return render(request, 'phonebook/company.html', context)
