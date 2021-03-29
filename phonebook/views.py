@@ -115,8 +115,11 @@ class EmployeeList:
                     filter_company.append(entry)
             return filter_company
 
-    def is_sorting(self):
-        return self.employee_list.sort(key=lambda x: x.company)
+    def sort(self, sort_value):
+        try:
+            return self.employee_list.sort(key=lambda x: getattr(x, sort_value))
+        except AttributeError:
+            print(f'Object has no attribute {sort_value}')
 
 
 def transfer(entries):
@@ -137,23 +140,29 @@ def transfer(entries):
     return employers
 
 
-def test2(request, company='all'):
+def index(request, company='all'):
     employers = transfer(server_request())
-    employers.is_sorting()
+    if 'sort' in request.GET:
+        sort_value = request.GET.get('sort')
+        employers.sort(sort_value)
+    else:
+        sort_value = 'display_name'
+        employers.sort(sort_value)
+
     context = {
         'entries': employers.company(company=company),
     }
-    return render(request, 'phonebook/test.html', context)
+    return render(request, 'phonebook/index.html', context)
 
 
-def index(request):
+def index_old(request):
     entries = server_request()
     entries.sort()
     context = {
         'entries': entries
     }
     print(len(entries))
-    return render(request, 'phonebook/index.html', context)
+    return render(request, 'phonebook/index_old.html', context)
 
 
 def filter_by_company(request, company):
