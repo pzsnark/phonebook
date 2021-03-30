@@ -41,15 +41,6 @@ class Employee:
     def __str__(self):
         return self._account_name
 
-    # def __eq__(self, other):
-    #     return self.account_name == other.account_name
-
-    # def __lt__(self, other):
-    #     return self.display_name < other.display_name
-    #
-    # def __gt__(self, other):
-    #     return self.display_name > other.display_name
-
     @property
     def account_name(self):
         return self._account_name
@@ -153,25 +144,3 @@ def index(request, company='all'):
         'entries': employers.company(company=company),
     }
     return render(request, 'phonebook/index.html', context)
-
-
-# def index_old(request):
-#     entries = server_request()
-#     entries.sort()
-#     context = {
-#         'entries': entries
-#     }
-#     print(len(entries))
-#     return render(request, 'phonebook/index_old.html', context)
-#
-#
-# def filter_by_company(request, company):
-#     entries = []
-#     for entry in server_request():
-#         if entry.company == company:
-#             entries.append(entry)
-#     entries.sort()
-#     context = {
-#         'entries': entries
-#     }
-#     return render(request, 'phonebook/company.html', context)
