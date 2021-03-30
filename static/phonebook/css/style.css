@@ -15,10 +15,6 @@ header {
     margin: 0 auto;
 }
 
-main {
-
-}
-
 ul {
     margin-left: 0;
     padding-left: 0;
@@ -86,13 +82,12 @@ a:hover {
 
 footer {
     display: block;
-    width: 1520px;
+    width: 1500px;
     text-align: center;
     border-top: rgba(0, 0, 0, 0.1) 1px solid;
     margin: 0 auto;
     padding: 20px; 
 }
-
 
 .center {
     text-align: center;
