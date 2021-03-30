@@ -1,6 +1,9 @@
 import ldap3
 from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 from ldap3 import Connection, SUBTREE
+
+from phonebook_django.settings import CACHE_TTL
 
 AD_SERVER = 'dc2.gk.local'
 AD_USER = 'ldap-bot@gk.local'
@@ -131,6 +134,7 @@ def transfer(entries):
     return employers
 
 
+@cache_page(CACHE_TTL)
 def index(request, company='all'):
     employers = transfer(server_request())
     if 'sort' in request.GET:
