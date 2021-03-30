@@ -1,6 +1,9 @@
 import ldap3
 from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 from ldap3 import Connection, SUBTREE
+
+from phonebook_django.settings import CACHE_TTL
 
 AD_SERVER = 'dc2.gk.local'
 AD_USER = 'ldap-bot@gk.local'
@@ -40,15 +43,6 @@ class Employee:
 
     def __str__(self):
         return self._account_name
-
-    # def __eq__(self, other):
-    #     return self.account_name == other.account_name
-
-    # def __lt__(self, other):
-    #     return self.display_name < other.display_name
-    #
-    # def __gt__(self, other):
-    #     return self.display_name > other.display_name
 
     @property
     def account_name(self):
@@ -140,6 +134,7 @@ def transfer(entries):
     return employers
 
 
+@cache_page(CACHE_TTL)
 def index(request, company='all'):
     employers = transfer(server_request())
     if 'sort' in request.GET:
@@ -153,25 +148,3 @@ def index(request, company='all'):
         'entries': employers.company(company=company),
     }
     return render(request, 'phonebook/index.html', context)
-
-
-# def index_old(request):
-#     entries = server_request()
-#     entries.sort()
-#     context = {
-#         'entries': entries
-#     }
-#     print(len(entries))
-#     return render(request, 'phonebook/index_old.html', context)
-#
-#
-# def filter_by_company(request, company):
-#     entries = []
-#     for entry in server_request():
-#         if entry.company == company:
-#             entries.append(entry)
-#     entries.sort()
-#     context = {
-#         'entries': entries
-#     }
-#     return render(request, 'phonebook/company.html', context)
