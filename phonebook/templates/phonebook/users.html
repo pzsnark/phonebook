@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load format_mobile from tags %}
+
+{% block title %}Учетные записи{% endblock %}
+
+{% block content %}
+<header>
+    <div class="account center">Учетная запись</div>
+    <div class="displayname center">ФИО</div>
+    <div class="status center">Статус</div>
+    <div class="bad_pwd_count center">Неверных вводов</div>
+    <div class="create_user center">Дата создания</div>
+    <div class="lockout_time center">Дата блокировки</div>
+</header>
+<main>
+    {% if entries %}
+        {% for entry in entries %}
+            <div class="wrapper">
+                <div class="account">
+                    {% if entry.account_name == '[]' %}
+                        Не определено
+                    {% else %}
+                    {% endif %}
+                    {{ entry.account_name }}
+                </div>
+                <div class="displayname">
+                    {% if entry.display_name == '[]' %}
+                        Не определено
+                    {% else %}
+                        {{ entry.display_name }}
+                    {% endif %}
+                </div>
+                <div class="status center">
+                    {% if entry.user_control == '16' %}
+                        Заблокирована
+                    {% elif entry.user_control == '512' %}
+                        Включена
+                    {% elif entry.user_control == '66048' %}
+                        Включена
+                    {% elif entry.user_control == '66050' %}
+                        Отключена
+                    {% else %}
+                        {{ entry.user_control }}
+                    {% endif %}
+                </div>
+                <div class="bad_pwd_count center">
+                    {% if entry.bad_pwd_count == '[]' %}
+                    {% elif entry.bad_pwd_count == '0' %}
+                    {% else %}
+                        {{ entry.bad_pwd_count }}
+                    {% endif %}
+                </div>
+                <div class="create_user">
+                    {% if entry.create_user == '[]' %}
+                        Не определено
+                    {% else %}
+                        {{ entry.create_user }}
+                    {% endif %}
+                </div>
+                <div class="lockout_time">
+                    {% if entry.lockout_time == '[]' %}
+                    {% elif entry.lockout_time == '1601-01-01 00:00:00+00:00' %}
+                    {% else %}
+                        {{ entry.lockout_time }}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="wrapper">Контекст не найден</div>
+    {% endif %}
+    <br>
+    <div class="wrapper">Всего записей: {{ entries|length }}</div>
+</main>
+{% endblock %}

@@ -80,6 +80,26 @@ a:hover {
     min-width: 300px;
 }
 
+.account {
+    min-width: 150px;
+}
+
+.status {
+    min-width: 80px;
+}
+
+.bad_pwd_count {
+    min-width: 120px;
+}
+
+.create_user {
+    min-width: 200px;
+}
+
+.lockout_time {
+    min-width: 150px;
+}
+
 footer {
     display: block;
     width: 1500px;
