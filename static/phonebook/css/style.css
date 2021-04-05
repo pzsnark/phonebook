@@ -43,6 +43,12 @@ a:hover {
     width: 1520px;
 }
 
+.container {
+    display: flex;
+    margin: 0 auto;
+    width: 1520px;
+}
+
 .wrapper:hover {
     background: rgba(0, 0, 0, 0.1);
     transition-duration: 0.1s;
@@ -130,4 +136,20 @@ footer {
     border: rgba(0, 0, 0, 0.1) 1px solid;
     padding: 5px 5px;
     background: rgba(0, 0, 0, 0.1)
+}
+
+
+/* Формы, кнопки */
+
+table {
+    margin: 0 auto;
+}
+
+.login-form {
+    margin: 20px auto;
+}
+
+button {
+    display: block;
+    margin-top: 5px;
 }
