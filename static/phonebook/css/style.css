@@ -145,11 +145,22 @@ table {
     margin: 0 auto;
 }
 
+td>input {
+    box-sizing: border-box;
+    height: 2em;
+    padding-left: 10px;
+    border: 1px #000 solid;
+    border-radius: 3px;
+}
+
 .login-form {
     margin: 20px auto;
 }
 
 button {
-    display: block;
     margin-top: 5px;
+    box-sizing: border-box;
+    height: 2em;
+    border: 1px #000 solid;
+    border-radius: 3px;
 }

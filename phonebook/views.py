@@ -189,3 +189,4 @@ def user_control(request, company='all'):
         'entries': employers.company(company=company),
     }
     return render(request, 'phonebook/users.html', context)
+

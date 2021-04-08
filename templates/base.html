@@ -10,7 +10,7 @@
 <div class="container">
 {% block auth %}
     {% if user.is_authenticated %}
-        Пользователь: {{ user }} (<a href="{% url 'logout' %}">Выйти</a>)
+        Пользователь: {{ user.last_name }} {{ user.first_name}} (<a href="{% url 'logout' %}">Выйти</a>)
     {% else %}
         <a href="{% url 'login' %}">Войти</a>
     {% endif %}
