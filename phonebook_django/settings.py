@@ -105,16 +105,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/1",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient"
-#         },
-#         "KEY_PREFIX": "example"
-#     }
-# }
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "example"
+    }
+}
 
 # Cache time to live is 15 minutes.
 CACHE_TTL = 60 * 15
@@ -144,7 +144,7 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_REDIRECT_URL = '/phonebook/'
-LOGOUT_REDIRECT_URL = '/phonebook/'
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
 
 # ---------
@@ -152,8 +152,7 @@ LOGOUT_REDIRECT_URL = '/phonebook/'
 # ---------
 
 AUTH_LDAP_SERVER_URI = "ldap://dc2.gk.local"
-AUTH_LDAP_ALWAYS_UPDATE_USER = True
-AUTH_LDAP_BIND_DN = "CN=ldap-bot,OU=IT,DC=gk,DC=local"
+AUTH_LDAP_BIND_DN = "cn=ldap-bot,ou=IT,dc=gk,dc=local"
 AUTH_LDAP_BIND_PASSWORD = "12345678"
 # AUTH_LDAP_BIND_DN = os.environ.get("LDAP_USERNAME")
 # AUTH_LDAP_BIND_PASSWORD = os.environ.get("LDAP_PASSWORD")
@@ -169,18 +168,23 @@ AUTH_LDAP_USER_ATTR_MAP = {
 }
 
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
-            "dc=gk,dc=local", ldap.SCOPE_SUBTREE, "(objectCategory=Group)"
+            "ou=Users,dc=gk,dc=local", ldap.SCOPE_SUBTREE, "(objectCategory=Group)"
             )
+
 AUTH_LDAP_GROUP_TYPE = ActiveDirectoryGroupType(name_attr="cn")
+
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-            "is_superuser": "OU=IT,DC=gk,DC=local",
-            "is_staff": "OU=IT,DC=gk,DC=local",
+            # "is_active": "cn=IT,ou=Users,dc=gk,dc=local",
+            # "is_superuser": "cn=IT,ou=Users,dc=gk,dc=local",
+            # "is_staff": "cn=IT,ou=Users,dc=gk,dc=local",
             }
+
 AUTH_LDAP_FIND_GROUP_PERMS = True
-AUTH_LDAP_CACHE_GROUPS = True
-AUTH_LDAP_GROUP_CACHE_TIMEOUT = 1  # 1 hour cache
+AUTH_LDAP_ALWAYS_UPDATE_USER = True
+# AUTH_LDAP_CACHE_GROUPS = True
+# AUTH_LDAP_GROUP_CACHE_TIMEOUT = 1  # 1 hour cache
 
 AUTHENTICATION_BACKENDS = [
             'django_auth_ldap.backend.LDAPBackend',
-            # 'django.contrib.auth.backends.ModelBackend',
+            'django.contrib.auth.backends.ModelBackend',
 ]
