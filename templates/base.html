@@ -28,7 +28,13 @@
             <li><a href="{% url 'phonebook:index' company='PRS' %}">Перспектива</a></li>
             <li><a href="{% url 'phonebook:index' company='VPR' %}">Волга-Проект</a></li>
             <li>---</li>
-            <li><a href="{% url 'phonebook:index' company='all'%}">Все</a></li>
+            <li><a href="{% url 'phonebook:index' company='all' %}">Все</a></li>
+            <li>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'phonebook:user_control' company='all' %}">Пользователи</a>
+                {% else %}
+                {% endif %}
+            </li>
         </ul>
     </div>
 {% block content %}
@@ -36,7 +42,7 @@
 {% endblock %}
 <footer>
     <div>Developed by Филиппов Константин</div>
-    <div>Последнее обновление: 29.03.2021</div>
+    <div>Последнее обновление: 09.04.2021</div>
     <div>Обратная связь: <a href="mailto:filippov@avsst.ru">filippov@avsst.ru</a></div>
 </footer>
 </body>

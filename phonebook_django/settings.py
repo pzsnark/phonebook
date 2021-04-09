@@ -174,9 +174,9 @@ AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
 AUTH_LDAP_GROUP_TYPE = ActiveDirectoryGroupType(name_attr="cn")
 
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-            # "is_active": "cn=IT,ou=Users,dc=gk,dc=local",
-            # "is_superuser": "cn=IT,ou=Users,dc=gk,dc=local",
-            # "is_staff": "cn=IT,ou=Users,dc=gk,dc=local",
+            "is_active": "cn=IT,cn=users,dc=gk,dc=local",
+            # "is_superuser": "cn=IT,cn=Users,dc=gk,dc=local",
+            "is_staff": "cn=IT,cn=Users,dc=gk,dc=local",
             }
 
 AUTH_LDAP_FIND_GROUP_PERMS = True
@@ -185,6 +185,6 @@ AUTH_LDAP_ALWAYS_UPDATE_USER = True
 # AUTH_LDAP_GROUP_CACHE_TIMEOUT = 1  # 1 hour cache
 
 AUTHENTICATION_BACKENDS = [
-            'django_auth_ldap.backend.LDAPBackend',
+            # 'django_auth_ldap.backend.LDAPBackend',
             'django.contrib.auth.backends.ModelBackend',
 ]
