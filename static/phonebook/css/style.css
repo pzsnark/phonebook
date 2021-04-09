@@ -43,6 +43,12 @@ a:hover {
     width: 1520px;
 }
 
+.container {
+    display: flex;
+    margin: 0 auto;
+    width: 1520px;
+}
+
 .wrapper:hover {
     background: rgba(0, 0, 0, 0.1);
     transition-duration: 0.1s;
@@ -80,6 +86,26 @@ a:hover {
     min-width: 300px;
 }
 
+.account {
+    min-width: 150px;
+}
+
+.status {
+    min-width: 80px;
+}
+
+.bad_pwd_count {
+    min-width: 120px;
+}
+
+.create_user {
+    min-width: 200px;
+}
+
+.lockout_time {
+    min-width: 150px;
+}
+
 footer {
     display: block;
     width: 1500px;
@@ -110,4 +136,31 @@ footer {
     border: rgba(0, 0, 0, 0.1) 1px solid;
     padding: 5px 5px;
     background: rgba(0, 0, 0, 0.1)
+}
+
+
+/* Формы, кнопки */
+
+table {
+    margin: 0 auto;
+}
+
+td>input {
+    box-sizing: border-box;
+    height: 2em;
+    padding-left: 10px;
+    border: 1px #000 solid;
+    border-radius: 3px;
+}
+
+.login-form {
+    margin: 20px auto;
+}
+
+button {
+    margin-top: 5px;
+    box-sizing: border-box;
+    height: 2em;
+    border: 1px #000 solid;
+    border-radius: 3px;
 }

@@ -1,0 +1,24 @@
+{% extends  'base.html' %}
+
+{% block auth %}
+<div class="login-form">
+    <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+        <table>
+            <tr>
+                <td align="right">{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td align="right">{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2"><button type="submit">Войти</button></td>
+            </tr>
+        </table>
+        {{ form.password.errors }}
+        {{ form.non_field_errors }}
+    </form>
+</div>
+{% endblock %}

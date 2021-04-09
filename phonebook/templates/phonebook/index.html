@@ -81,7 +81,7 @@
                 <div class="mail">
                     {% if entry.email == '[]' %}
                     {% else %}
-                        {{ entry.email }}
+                        {{ entry.email|lower }}
                     {% endif %}
                 </div>
             </div>

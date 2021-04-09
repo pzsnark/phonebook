@@ -20,7 +20,8 @@ def server_request():
                 '(&(objectCategory=Person)(!(UserAccountControl:1.2.840.113556.1.4.803:=2))(&(company=*)))',
                 SUBTREE,
                 attributes=['department', 'sAMAccountName', 'displayName', 'physicalDeliveryOfficeName',
-                            'telephoneNumber', 'mail', 'mobile', 'title', 'company', 'lastLogon']
+                            'telephoneNumber', 'mail', 'mobile', 'title', 'company', 'lastLogon', 'userAccountControl',
+                            'badPwdCount', 'createTimeStamp', 'lockoutTime']
                 )
     return conn.entries
 
@@ -29,7 +30,8 @@ class Employee:
     """Запись из Active Directory (Person)"""
 
     def __init__(self,
-                 account_name, display_name, company, title, department, office, phone, mobile, email, last_logon):
+                 account_name, display_name, company, title, department,
+                 office, phone, mobile, email, last_logon, user_control, bad_pwd_count, create_user, lockout_time):
         self._account_name = account_name
         self._display_name = display_name
         self._company = company
@@ -40,6 +42,10 @@ class Employee:
         self._mobile = mobile
         self._email = email
         self._last_logon = last_logon
+        self._user_control = user_control
+        self._bad_pwd_count = bad_pwd_count
+        self._create_user = create_user
+        self._lockout_time = lockout_time
 
     def __str__(self):
         return self._account_name
@@ -83,6 +89,22 @@ class Employee:
     @property
     def last_logon(self):
         return self._last_logon
+
+    @property
+    def user_control(self):
+        return self._user_control
+
+    @property
+    def bad_pwd_count(self):
+        return self._bad_pwd_count
+
+    @property
+    def create_user(self):
+        return self._create_user
+
+    @property
+    def lockout_time(self):
+        return self._lockout_time
 
 
 class EmployeeList:
@@ -129,12 +151,16 @@ def transfer(entries):
             phone=str(entry.telephoneNumber),
             mobile=str(entry.mobile),
             email=str(entry.mail),
-            last_logon=str(entry.lastLogon)
+            last_logon=str(entry.lastLogon),
+            user_control=str(entry.userAccountControl),
+            bad_pwd_count=str(entry.badPwdCount),
+            create_user=str(entry.createTimeStamp),
+            lockout_time=str(entry.lockoutTime),
         ))
     return employers
 
 
-@cache_page(CACHE_TTL)
+# @cache_page(CACHE_TTL)
 def index(request, company='all'):
     employers = transfer(server_request())
     if 'sort' in request.GET:
@@ -148,3 +174,19 @@ def index(request, company='all'):
         'entries': employers.company(company=company),
     }
     return render(request, 'phonebook/index.html', context)
+
+
+def user_control(request, company='all'):
+    employers = transfer(server_request())
+    if 'sort' in request.GET:
+        sort_value = request.GET.get('sort')
+        employers.sort(sort_value)
+    else:
+        sort_value = 'display_name'
+        employers.sort(sort_value)
+
+    context = {
+        'entries': employers.company(company=company),
+    }
+    return render(request, 'phonebook/users.html', context)
+
