@@ -1,4 +1,5 @@
 import ldap3
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 from ldap3 import Connection, SUBTREE
@@ -176,6 +177,7 @@ def index(request, company='all'):
     return render(request, 'phonebook/index.html', context)
 
 
+@login_required
 def user_control(request, company='all'):
     employers = transfer(server_request())
     if 'sort' in request.GET:
