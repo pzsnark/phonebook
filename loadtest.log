@@ -1,0 +1,19 @@
+[Tue Mar 30 2021 09:04:19 GMT+0400 (Самарское стандартное время)] INFO Requests: 0 (0%), requests per second: 0, mean latency: 0 ms
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO 
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Target URL:          http://server/app/phonebook
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Max requests:        100
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Concurrency level:   1
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Agent:               keepalive
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO 
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Completed requests:  100
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Total errors:        0
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Total time:          0.543972973 s
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Requests per second: 184
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Mean latency:        5.3 ms
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO 
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO Percentage of the requests served within a certain time
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO   50%      5 ms
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO   90%      5 ms
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO   95%      6 ms
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO   99%      42 ms
+[Tue Mar 30 2021 09:04:20 GMT+0400 (Самарское стандартное время)] INFO  100%      42 ms (longest request)
