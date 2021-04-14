@@ -1,12 +1,13 @@
 # import ldap3
 # from ldap3 import Connection, SUBTREE
 # from django.shortcuts import render
-#
-# AD_SERVER = 'dc2.gk.local'
-# AD_USER = 'ldap-bot@gk.local'
-# AD_PASSWORD = '12345678'
+# import os
+# #
+# #
 # AD_SEARCH_TREE = 'dc=gk,dc=local'
-#
+# AD_SERVER = os.environ.get('AD_SERVER')
+# AD_USER = os.environ.get('AD_USER')
+# AD_PASSWORD = os.environ.get('AD_PASSWORD')
 #
 # def server_request():
 #     server = ldap3.Server(AD_SERVER)
@@ -27,23 +28,4 @@
 # for entry in entries:
 #     print(entry)
 
-class Card(object):
 
-    def __init__(self, rank, suit):
-        self.rank = rank
-        self.suit = suit
-
-    # def __eq__(self, other):
-    #     return self.rank == other.rank and self.suit == other.suit
-
-    def __lt__(self, other):
-        return self.rank < other.rank
-
-
-hand = [Card(10, 'H'), Card(2, 'h'), Card(12, 'h'), Card(13, 'h'), Card(14, 'h')]
-hand_order = [c.rank for c in hand]  # [10, 2, 12, 13, 14]
-print(hand_order)
-
-hand_sorted = sorted(hand)
-hand_sorted_order = [c.rank for c in hand_sorted]  # [2, 10, 12, 13, 14]
-print(hand_sorted_order)

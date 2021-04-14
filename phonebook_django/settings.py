@@ -143,8 +143,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-LOGIN_REDIRECT_URL = '/app/phonebook/'
-LOGOUT_REDIRECT_URL = '/app/accounts/login'
+LOGIN_REDIRECT_URL = '/phonebook/'
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
 
 # ---------
@@ -185,6 +185,6 @@ AUTH_LDAP_ALWAYS_UPDATE_USER = True
 # AUTH_LDAP_GROUP_CACHE_TIMEOUT = 1  # 1 hour cache
 
 AUTHENTICATION_BACKENDS = [
-            # 'django_auth_ldap.backend.LDAPBackend',
+            'django_auth_ldap.backend.LDAPBackend',
             'django.contrib.auth.backends.ModelBackend',
 ]

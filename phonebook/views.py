@@ -3,18 +3,18 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 from ldap3 import Connection, SUBTREE
-
+import os
 from phonebook_django.settings import CACHE_TTL
 
-AD_SERVER = 'dc2.gk.local'
-AD_USER = 'ldap-bot@gk.local'
-AD_PASSWORD = '12345678'
 AD_SEARCH_TREE = 'dc=gk,dc=local'
+AD_SERVER = os.environ.get('AD_SERVER')
+AD_USER = os.environ.get('AD_USER')
+AD_PASSWORD = os.environ.get('AD_PASSWORD')
 
 
 def server_request():
     server = ldap3.Server(AD_SERVER)
-    conn = Connection(server, user=AD_USER, password=AD_PASSWORD)  # вынести реквизиты в окружение ОС
+    conn = Connection(server, user=AD_USER, password=AD_PASSWORD)
     conn.bind()
 
     conn.search(AD_SEARCH_TREE,
