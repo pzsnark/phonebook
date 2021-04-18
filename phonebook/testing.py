@@ -18,30 +18,26 @@ try:
 except LDAPCommunicationError:
     print('Ошибка подключения')
 
-# add function
+
+# function of add
 # conn.modify('cn=Филиппов Константин Николаевич,ou=IT,dc=gk,dc=local',
 #             {'telephoneNumber': [(MODIFY_REPLACE, ['800'])]})
 # print(conn.result)
 
 # search function
 conn.search(AD_SEARCH_TREE,
-            '(&(objectCategory=Person)(!(UserAccountControl:1.2.840.113556.1.4.803:=2))(&(department=IT)))',
+            '(&(department=IT))',
             SUBTREE,
             attributes=[ldap3.ALL_ATTRIBUTES]
             )
 # print(conn.entries)
 
+conn.entries.sort(key=lambda x: x.name.value)
 
-# def sort(self, sort_value):
-#     try:
-#         return self.employee_list.sort(key=lambda x: getattr(x, sort_value))
-#     except AttributeError:
-#         print(f'Object has no attribute {sort_value}')
-
-
-# conn.entries.sort(key=lambda x: x.name.value)
-
+selection = []
 for entry in conn.entries:
-    print(entry)
+    if entry.userAccountControl.value == 66050:
+        selection.append(entry)
+print(len(selection), selection)
 
 conn.unbind()

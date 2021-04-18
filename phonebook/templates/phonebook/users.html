@@ -17,51 +17,51 @@
         {% for entry in entries %}
             <div class="wrapper">
                 <div class="account">
-                    {% if entry.account_name == '[]' %}
+                    {% if entry.sAMAccountName == '[]' %}
                         Не определено
                     {% else %}
                     {% endif %}
-                    {{ entry.account_name }}
+                    {{ entry.sAMAccountName }}
                 </div>
                 <div class="displayname">
-                    {% if entry.display_name == '[]' %}
+                    {% if entry.displayName == '[]' %}
                         Не определено
                     {% else %}
-                        {{ entry.display_name }}
+                        {{ entry.displayName }}
                     {% endif %}
                 </div>
                 <div class="status center">
-                    {% if entry.user_control == '16' %}
+                    {% if entry.userAccountControl == 16 %}
                         Заблокирована
-                    {% elif entry.user_control == '512' %}
+                    {% elif entry.userAccountControl == 512 %}
                         Включена
-                    {% elif entry.user_control == '66048' %}
+                    {% elif entry.userAccountControl == 66048 %}
                         Включена
-                    {% elif entry.user_control == '66050' %}
+                    {% elif entry.userAccountControl == 66050 %}
                         Отключена
                     {% else %}
-                        {{ entry.user_control }}
+                        {{ entry.userAccountControl }}
                     {% endif %}
                 </div>
                 <div class="bad_pwd_count center">
-                    {% if entry.bad_pwd_count == '[]' %}
-                    {% elif entry.bad_pwd_count == '0' %}
+                    {% if entry.badPwdCount == '[]' %}
+                    {% elif entry.badPwdCount == '0' %}
                     {% else %}
-                        {{ entry.bad_pwd_count }}
+                        {{ entry.badPwdCount }}
                     {% endif %}
                 </div>
                 <div class="create_user">
-                    {% if entry.create_user == '[]' %}
+                    {% if entry.whenCreated == '[]' %}
                         Не определено
                     {% else %}
-                        {{ entry.create_user }}
+                        {{ entry.whenCreated }}
                     {% endif %}
                 </div>
                 <div class="lockout_time">
-                    {% if entry.lockout_time == '[]' %}
-                    {% elif entry.lockout_time == '1601-01-01 00:00:00+00:00' %}
+                    {% if entry.lockoutTime == 0 %}
+                    {% elif entry.lockoutTime == '1601-01-01 00:00:00+00:00' %}
                     {% else %}
-                        {{ entry.lockout_time }}
+                        {{ entry.lockoutTime }}
                     {% endif %}
                 </div>
             </div>

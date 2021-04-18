@@ -31,7 +31,7 @@
             <li><a href="{% url 'phonebook:index' company='all' %}">Все</a></li>
             <li>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'phonebook:user_control' company='all' %}">Пользователи</a>
+                    <a href="{% url 'phonebook:users' company='all' %}">Пользователи</a>
                 {% else %}
                 {% endif %}
             </li>

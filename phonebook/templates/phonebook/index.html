@@ -19,11 +19,11 @@
         {% for entry in entries %}
             <div class="wrapper">
                 <div class="displayname">
-                    {% if entry.display_name == '[]' %}
+                    {% if entry.displayName == '[]' %}
                         Не определено
                     {% else %}
                     {% endif %}
-                    {{ entry.display_name }}
+                    {{ entry.displayName }}
                 </div>
                 <div class="company">
                     {% if entry.company == 'ODS' %}
@@ -61,9 +61,9 @@
                     {% endif %}
                 </div>
                 <div class="office">
-                    {% if entry.office == '[]' %}
+                    {% if entry.physicalDeliveryOfficeName == '[]' %}
                     {% else %}
-                        {{ entry.office }}
+                        {{ entry.physicalDeliveryOfficeName }}
                     {% endif %}
                 </div>
                 <div class="phone">
@@ -79,9 +79,9 @@
                     {% endif %}
                 </div>
                 <div class="mail">
-                    {% if entry.email == '[]' %}
+                    {% if entry.mail == '[]' %}
                     {% else %}
-                        {{ entry.email|lower }}
+                        {{ entry.mail|lower }}
                     {% endif %}
                 </div>
             </div>

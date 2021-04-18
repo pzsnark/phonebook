@@ -1,9 +1,13 @@
 import ldap3
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
-from ldap3 import Connection, SUBTREE
+from ldap3 import Connection, SUBTREE, ALL_ATTRIBUTES, MODIFY_REPLACE
 import os
+
+from ldap3.core.exceptions import LDAPCursorAttributeError
+
 from phonebook_django.settings import CACHE_TTL
 
 AD_SEARCH_TREE = 'dc=gk,dc=local'
@@ -13,16 +17,13 @@ AD_PASSWORD = os.environ.get('AD_PASSWORD')
 
 
 def server_request():
-    server = ldap3.Server(AD_SERVER)
-    conn = Connection(server, user=AD_USER, password=AD_PASSWORD)
+    conn = Connection(server=AD_SERVER, user=AD_USER, password=AD_PASSWORD)
     conn.bind()
 
     conn.search(AD_SEARCH_TREE,
                 '(&(objectCategory=Person)(!(UserAccountControl:1.2.840.113556.1.4.803:=2))(&(company=*)))',
                 SUBTREE,
-                attributes=['department', 'sAMAccountName', 'displayName', 'physicalDeliveryOfficeName',
-                            'telephoneNumber', 'mail', 'mobile', 'title', 'company', 'lastLogon', 'userAccountControl',
-                            'badPwdCount', 'createTimeStamp', 'lockoutTime']
+                attributes=[ALL_ATTRIBUTES]
                 )
     return conn.entries
 
@@ -162,7 +163,7 @@ def transfer(entries):
 
 
 # @cache_page(CACHE_TTL)
-def index(request, company='all'):
+def index2(request, company='all'):
     employers = transfer(server_request())
     if 'sort' in request.GET:
         sort_value = request.GET.get('sort')
@@ -192,3 +193,47 @@ def user_control(request, company='all'):
     }
     return render(request, 'phonebook/users.html', context)
 
+
+def index(request, company=''):
+    selection = []
+    all_users = server_request()
+    sort = request.GET.get('sort')
+
+    try:
+        all_users.sort(key=lambda x: getattr(x, sort, ''))
+    except LDAPCursorAttributeError:
+        print(f'Attribute {sort} not found')
+
+    for entry in all_users:
+        if entry.company.value == company:
+            selection.append(entry)
+
+    if len(selection) == 0:
+        context = {'entries': all_users}
+    else:
+        context = {'entries': selection}
+
+    return render(request, 'phonebook/index.html', context)
+
+
+def users(request, company=''):
+    selection = []
+    all_users = server_request()
+    for entry in all_users:
+        if hasattr(entry, 'lockoutTime') is True:
+            if entry.lockoutTime != 0:
+                selection.append(entry)
+
+    context = {
+        'entries': selection,
+    }
+    return render(request, 'phonebook/users.html', context)
+
+
+def status(request, cn):
+    conn = Connection(AD_SERVER, AD_USER, AD_PASSWORD)
+    user = request.GET.get('user')
+    state = request.GET.get('state')
+    conn.modify(cn,
+                {'telephoneNumber': [(MODIFY_REPLACE, ['800'])]})
+    print(conn.result)
