@@ -6,7 +6,6 @@ app_name = "phonebook"
 
 urlpatterns = [
     path('', views.index, name='index'),
-    # path('<str:company>/', views.index, name='index'),
     path('users/', views.users, name='users'),
-    path('users/state/', views.state, name='state'),
+    path('users/status/', views.status, name='status'),
 ]
