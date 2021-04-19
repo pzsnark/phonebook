@@ -23,7 +23,7 @@ users = conn.search_s(basedn, scope, searchFilter, attrlist)
 
 class Employee:
 
-    def __init__(self, attrlist):
+    def __init__(self):
         self.__fields = attrlist
 
     def __getattr__(self, field_name):
@@ -32,10 +32,10 @@ class Employee:
         else:
             return self.__dict__.get(field_name)
 
-    def import_users(self):
-        for user in users:
-            Employee(attrlist)
+    # def import_users(self):
+    #     for user in users:
+    #         Employee
 
 
-user_object = Employee(attrlist)
+user_object = Employee
 print(user_object)

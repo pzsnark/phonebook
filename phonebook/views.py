@@ -1,5 +1,6 @@
 import ldap3
-
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
@@ -20,8 +21,9 @@ def server_request():
     conn = Connection(server=AD_SERVER, user=AD_USER, password=AD_PASSWORD)
     conn.bind()
 
+    # (!(UserAccountControl:1.2.840.113556.1.4.803 := 2)) активные учетные записи
     conn.search(AD_SEARCH_TREE,
-                '(&(objectCategory=Person)(!(UserAccountControl:1.2.840.113556.1.4.803:=2))(&(company=*)))',
+                '(&(objectCategory=Person)(&(company=*)))',
                 SUBTREE,
                 attributes=[ALL_ATTRIBUTES]
                 )
@@ -194,13 +196,18 @@ def user_control(request, company='all'):
     return render(request, 'phonebook/users.html', context)
 
 
-def index(request, company=''):
+def index(request):
     selection = []
     all_users = server_request()
     sort = request.GET.get('sort')
+    company = request.GET.get('company')
+
+    if sort is None:
+        sort = 'displayName'
 
     try:
-        all_users.sort(key=lambda x: getattr(x, sort, ''))
+        all_users.sort(key=lambda x: x.displayName.value)
+        # all_users.sort(key=lambda x: getattr(x, sort, ''))
     except LDAPCursorAttributeError:
         print(f'Attribute {sort} not found')
 
@@ -209,31 +216,49 @@ def index(request, company=''):
             selection.append(entry)
 
     if len(selection) == 0:
-        context = {'entries': all_users}
+        context = {'entries': all_users, 'company': company}
     else:
-        context = {'entries': selection}
+        context = {'entries': selection, 'company': company}
 
     return render(request, 'phonebook/index.html', context)
 
 
-def users(request, company=''):
+def users(request):
+    sort = request.GET.get('sort')
+    company = request.GET.get('company')
     selection = []
     all_users = server_request()
+
+    try:
+        all_users.sort(key=lambda x: x.displayName.value)
+    except LDAPCursorAttributeError:
+        print(f'Attribute {sort} not found')
+
     for entry in all_users:
-        if hasattr(entry, 'lockoutTime') is True:
-            if entry.lockoutTime != 0:
-                selection.append(entry)
+        # if hasattr(entry, 'lockoutTime') is False:
+        if entry.userAccountControl == 514 or 66050:
+            selection.append(entry)
 
     context = {
         'entries': selection,
+        'all_users': all_users
     }
     return render(request, 'phonebook/users.html', context)
 
 
-def status(request, cn):
+def state(request):
     conn = Connection(AD_SERVER, AD_USER, AD_PASSWORD)
+    conn.bind()
+
     user = request.GET.get('user')
     state = request.GET.get('state')
-    conn.modify(cn,
-                {'telephoneNumber': [(MODIFY_REPLACE, ['800'])]})
+    if state == 'disable':
+        state = 514
+    print(user)
+
+    conn.modify(user,
+                {'userAccountControl': [(MODIFY_REPLACE, [state])]})
     print(conn.result)
+    conn.unbind()
+
+    return HttpResponseRedirect(reverse('phonebook:users'))

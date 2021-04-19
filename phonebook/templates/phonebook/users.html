@@ -17,6 +17,8 @@
         {% for entry in entries %}
             <div class="wrapper">
                 <div class="account">
+                    <a href="{{ request.path }}state/?user={{ entry.distinguishedName }}&state={% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}disable{% else %}enable{% endif %}">{% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}Disable{% else %}Enable{% endif %}</a>
+<!--                    <a href="{{ request.path }}state/?user={{ entry.distinguishedName }}&state=disable">Disable</a>-->
                     {% if entry.sAMAccountName == '[]' %}
                         Не определено
                     {% else %}
@@ -33,11 +35,9 @@
                 <div class="status center">
                     {% if entry.userAccountControl == 16 %}
                         Заблокирована
-                    {% elif entry.userAccountControl == 512 %}
+                    {% elif entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}
                         Включена
-                    {% elif entry.userAccountControl == 66048 %}
-                        Включена
-                    {% elif entry.userAccountControl == 66050 %}
+                    {% elif entry.userAccountControl == 514 or entry.userAccountControl == 66050 %}
                         Отключена
                     {% else %}
                         {{ entry.userAccountControl }}
@@ -71,5 +71,6 @@
     {% endif %}
     <br>
     <div class="wrapper">Всего записей: {{ entries|length }}</div>
+    <div class="wrapper">Всего записей: {{ all_users|length }}</div>
 </main>
 {% endblock %}
