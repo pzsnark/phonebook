@@ -6,6 +6,8 @@ from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 from ldap3 import Connection, SUBTREE, ALL_ATTRIBUTES, MODIFY_REPLACE
 import os
+import datetime
+import pytz
 
 from ldap3.core.exceptions import LDAPCursorAttributeError
 
@@ -15,201 +17,42 @@ AD_SEARCH_TREE = 'dc=gk,dc=local'
 AD_SERVER = os.environ.get('AD_SERVER')
 AD_USER = os.environ.get('AD_USER')
 AD_PASSWORD = os.environ.get('AD_PASSWORD')
+search_query = {
+    'person_company': '(&(objectCategory=Person)(&(company=*)))',
+    'person_company_active': '(&(objectCategory=Person)(!(UserAccountControl:1.2.840.113556.1.4.803 := 2))(&(company=*)))'
+}
 
 
-def server_request():
+def init_connection(search_string):
     conn = Connection(server=AD_SERVER, user=AD_USER, password=AD_PASSWORD)
     conn.bind()
 
     # (!(UserAccountControl:1.2.840.113556.1.4.803 := 2)) активные учетные записи
     conn.search(AD_SEARCH_TREE,
-                '(&(objectCategory=Person)(&(company=*)))',
+                search_string,
                 SUBTREE,
                 attributes=[ALL_ATTRIBUTES]
                 )
     return conn.entries
 
 
-# class Employee:
-#     """Запись из Active Directory (Person)"""
-#
-#     def __init__(self,
-#                  account_name, display_name, company, title, department,
-#                  office, phone, mobile, email, last_logon, user_control, bad_pwd_count, create_user, lockout_time):
-#         self._account_name = account_name
-#         self._display_name = display_name
-#         self._company = company
-#         self._title = title
-#         self._department = department
-#         self._office = office
-#         self._phone = phone
-#         self._mobile = mobile
-#         self._email = email
-#         self._last_logon = last_logon
-#         self._user_control = user_control
-#         self._bad_pwd_count = bad_pwd_count
-#         self._create_user = create_user
-#         self._lockout_time = lockout_time
-#
-#     def __str__(self):
-#         return self._account_name
-#
-#     @property
-#     def account_name(self):
-#         return self._account_name
-#
-#     @property
-#     def display_name(self):
-#         return self._display_name
-#
-#     @property
-#     def company(self):
-#         return self._company
-#
-#     @property
-#     def title(self):
-#         return self._title
-#
-#     @property
-#     def department(self):
-#         return self._department
-#
-#     @property
-#     def office(self):
-#         return self._office
-#
-#     @property
-#     def phone(self):
-#         return self._phone
-#
-#     @property
-#     def mobile(self):
-#         return self._mobile
-#
-#     @property
-#     def email(self):
-#         return self._email
-#
-#     @property
-#     def last_logon(self):
-#         return self._last_logon
-#
-#     @property
-#     def user_control(self):
-#         return self._user_control
-#
-#     @property
-#     def bad_pwd_count(self):
-#         return self._bad_pwd_count
-#
-#     @property
-#     def create_user(self):
-#         return self._create_user
-#
-#     @property
-#     def lockout_time(self):
-#         return self._lockout_time
-#
-#
-# class EmployeeList:
-#     """Список объектов класса Employee"""
-#
-#     def __init__(self):
-#         self.employee_list = []
-#
-#     @property
-#     def register(self):
-#         return self.employee_list
-#
-#     @register.setter
-#     def register(self, value):
-#         self.employee_list.append(value)
-#
-#     def company(self, company):
-#         filter_company = []
-#         if company == 'all':
-#             return self.employee_list
-#         else:
-#             for entry in self.employee_list:
-#                 if entry.company == company:
-#                     filter_company.append(entry)
-#             return filter_company
-#
-#     def sort(self, sort_value):
-#         try:
-#             return self.employee_list.sort(key=lambda x: getattr(x, sort_value))
-#         except AttributeError:
-#             print(f'Object has no attribute {sort_value}')
-#
-#
-# def transfer(entries):
-#     employers = EmployeeList()
-#     for entry in entries:
-#         employers.register = (Employee(
-#             account_name=str(entry.sAMAccountName),
-#             display_name=str(entry.displayName),
-#             company=str(entry.company),
-#             title=str(entry.title),
-#             department=str(entry.department),
-#             office=str(entry.physicalDeliveryOfficeName),
-#             phone=str(entry.telephoneNumber),
-#             mobile=str(entry.mobile),
-#             email=str(entry.mail),
-#             last_logon=str(entry.lastLogon),
-#             user_control=str(entry.userAccountControl),
-#             bad_pwd_count=str(entry.badPwdCount),
-#             create_user=str(entry.createTimeStamp),
-#             lockout_time=str(entry.lockoutTime),
-#         ))
-#     return employers
-
-
-# @cache_page(CACHE_TTL)
-# def index2(request, company='all'):
-#     employers = transfer(server_request())
-#     if 'sort' in request.GET:
-#         sort_value = request.GET.get('sort')
-#         employers.sort(sort_value)
-#     else:
-#         sort_value = 'display_name'
-#         employers.sort(sort_value)
-#
-#     context = {
-#         'entries': employers.company(company=company),
-#     }
-#     return render(request, 'phonebook/index.html', context)
-#
-#
-# @login_required
-# def user_control(request, company='all'):
-#     employers = transfer(server_request())
-#     if 'sort' in request.GET:
-#         sort_value = request.GET.get('sort')
-#         employers.sort(sort_value)
-#     else:
-#         sort_value = 'display_name'
-#         employers.sort(sort_value)
-#
-#     context = {
-#         'entries': employers.company(company=company),
-#     }
-#     return render(request, 'phonebook/users.html', context)
+def get_value(obj, field):
+    try:
+        result = getattr(obj, field).value
+    except LDAPCursorAttributeError:
+        result = ''
+    return result
 
 
 def index(request):
     selection = []
-    all_users = server_request()
+    all_users = init_connection(search_query['person_company_active'])
     sort = request.GET.get('sort')
     company = request.GET.get('company')
 
     if sort is None:
         sort = 'displayName'
-
-    try:
-        all_users.sort(key=lambda x: x.displayName.value)
-        # all_users.sort(key=lambda x: getattr(x, sort, ''))
-    except LDAPCursorAttributeError:
-        print(f'Attribute {sort} not found')
+    all_users.sort(key=lambda x: get_value(x, sort))
 
     for entry in all_users:
         if entry.company.value == company:
@@ -223,16 +66,19 @@ def index(request):
     return render(request, 'phonebook/index.html', context)
 
 
+@login_required()
 def users(request):
     sort = request.GET.get('sort')
-    company = request.GET.get('company')
     selection = []
-    all_users = server_request()
+    all_users = init_connection(search_query['person_company'])
+    utc = pytz.utc
+    zero_lock_datetime = utc.localize(datetime.datetime(1601, 1, 1))
 
-    try:
-        all_users.sort(key=lambda x: x.displayName.value)
-    except LDAPCursorAttributeError:
-        print(f'Attribute {sort} not found')
+    print(zero_lock_datetime)
+
+    if sort is None:
+        sort = 'displayName'
+    all_users.sort(key=lambda x: get_value(x, sort))
 
     for entry in all_users:
         # if hasattr(entry, 'lockoutTime') is False:
@@ -241,7 +87,8 @@ def users(request):
 
     context = {
         'entries': selection,
-        'all_users': all_users
+        'all_users': all_users,
+        'zero_lock_datetime': zero_lock_datetime,
     }
     return render(request, 'phonebook/users.html', context)
 

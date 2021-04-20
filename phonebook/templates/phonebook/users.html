@@ -17,20 +17,11 @@
         {% for entry in entries %}
             <div class="wrapper">
                 <div class="account">
-                    <a href="{{ request.path }}state/?user={{ entry.distinguishedName }}&state={% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}disable{% else %}enable{% endif %}">{% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}Disable{% else %}Enable{% endif %}</a>
-<!--                    <a href="{{ request.path }}state/?user={{ entry.distinguishedName }}&state=disable">Disable</a>-->
-                    {% if entry.sAMAccountName == '[]' %}
-                        Не определено
-                    {% else %}
-                    {% endif %}
+                    <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state={% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}disable{% else %}enable{% endif %}">{% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}Disable{% else %}Enable{% endif %}</a>
                     {{ entry.sAMAccountName }}
                 </div>
                 <div class="displayname">
-                    {% if entry.displayName == '[]' %}
-                        Не определено
-                    {% else %}
-                        {{ entry.displayName }}
-                    {% endif %}
+                    {{ entry.displayName }}
                 </div>
                 <div class="status center">
                     {% if entry.userAccountControl == 16 %}
@@ -44,8 +35,7 @@
                     {% endif %}
                 </div>
                 <div class="bad_pwd_count center">
-                    {% if entry.badPwdCount == '[]' %}
-                    {% elif entry.badPwdCount == '0' %}
+                    {% if entry.badPwdCount == 0 %}
                     {% else %}
                         {{ entry.badPwdCount }}
                     {% endif %}
@@ -54,14 +44,13 @@
                     {% if entry.whenCreated == '[]' %}
                         Не определено
                     {% else %}
-                        {{ entry.whenCreated }}
+                        {{ entry.whenCreated.value|date:"d.m.Y" }}
                     {% endif %}
                 </div>
                 <div class="lockout_time">
-                    {% if entry.lockoutTime == 0 %}
-                    {% elif entry.lockoutTime == '1601-01-01 00:00:00+00:00' %}
+                    {% if entry.lockoutTime.value == zero_lock_datetime %}
                     {% else %}
-                        {{ entry.lockoutTime }}
+                    {{ entry.lockoutTime.value }}
                     {% endif %}
                 </div>
             </div>
