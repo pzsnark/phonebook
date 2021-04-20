@@ -125,7 +125,7 @@ CACHE_TTL = 60 * 15
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Samara'
 
 USE_I18N = True
 
