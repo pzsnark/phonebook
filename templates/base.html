@@ -27,12 +27,12 @@
             <li><a href="{% url 'phonebook:index' %}?company=VPR">Волга-Проект</a></li>
             <li>---</li>
             <li><a href="{% url 'phonebook:index' %}">Все</a></li>
-            <li>
+
                 {% if user.is_authenticated %}
-                    <a href="{% url 'phonebook:users' %}">Пользователи</a>
+            <li><a href="{% url 'phonebook:users' %}">Пользователи</a></li>
+            <li><a href="{% url 'phonebook:create' %}">Create AD user</a></li>
                 {% else %}
                 {% endif %}
-            </li>
         </ul>
     </div>
 {% block content %}

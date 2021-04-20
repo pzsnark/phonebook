@@ -81,7 +81,6 @@ def users(request):
     all_users.sort(key=lambda x: get_value(x, sort))
 
     for entry in all_users:
-        # if hasattr(entry, 'lockoutTime') is False:
         if entry.userAccountControl == 514 or 66050:
             selection.append(entry)
 
@@ -112,3 +111,9 @@ def status(request):
     conn.unbind()
 
     return HttpResponseRedirect(reverse('phonebook:users'))
+
+
+def create_ad_user(request):
+    pass
+    context = {}
+    return render(request, 'phonebook/create_ad_user.html', context)

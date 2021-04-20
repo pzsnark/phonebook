@@ -164,3 +164,11 @@ button {
     border: 1px #000 solid;
     border-radius: 3px;
 }
+
+/* Create AD user */
+
+.create-user {
+    display: block;
+    width: 200px;
+}
+
