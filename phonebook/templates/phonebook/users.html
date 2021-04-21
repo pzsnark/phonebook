@@ -48,9 +48,11 @@
                     {% endif %}
                 </div>
                 <div class="lockout_time">
-                    {% if entry.lockoutTime.value == zero_lock_datetime %}
-                    {% else %}
-                    {{ entry.lockoutTime.value }}
+                    {% if entry.lockoutTime.value %}
+                        {% if entry.lockoutTime.value == zero_lock_datetime %}
+                        {% else %}
+                            {{ entry.lockoutTime.value }} <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state=unlock">Разблокировать</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

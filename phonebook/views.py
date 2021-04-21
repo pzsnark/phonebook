@@ -1,6 +1,6 @@
 import ldap3
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
@@ -8,6 +8,7 @@ from ldap3 import Connection, SUBTREE, ALL_ATTRIBUTES, MODIFY_REPLACE
 import os
 import datetime
 import pytz
+from .forms import CreateADUserForm
 
 from ldap3.core.exceptions import LDAPCursorAttributeError
 
@@ -92,28 +93,60 @@ def users(request):
     return render(request, 'phonebook/users.html', context)
 
 
+@login_required()
 def status(request):
     conn = Connection(AD_SERVER, AD_USER, AD_PASSWORD)
     conn.bind()
 
     user = request.GET.get('user')
     state = request.GET.get('state')
+    field = 'userAccountControl'
+
     if state == 'disable':
         state = 514
     elif state == 'enable':
         state = 512
-    else:
-        pass
+    elif state == 'unlock':
+        field = 'lockoutTime'
+        state = 0
 
     conn.modify(user,
-                {'userAccountControl': [(MODIFY_REPLACE, [state])]})
+                {field: [(MODIFY_REPLACE, [state])]})
     print(conn.result)
     conn.unbind()
 
     return HttpResponseRedirect(reverse('phonebook:users'))
 
 
+@login_required()
 def create_ad_user(request):
-    pass
-    context = {}
-    return render(request, 'phonebook/create_ad_user.html', context)
+
+    if request.method == 'POST':
+        form = CreateADUserForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            ext_name = form.cleaned_data.get('ext_name')
+            title = form.cleaned_data.get('title')
+            department = form.cleaned_data.get('department')
+            location = form.cleaned_data.get('location')
+            email = form.cleaned_data.get('email')
+            ip_phone = form.cleaned_data.get('ip_phone')
+            phone = form.cleaned_data.get('phone')
+            company = form.cleaned_data.get('company')
+
+            account_name = last_name + '.' + first_name[:1] + ext_name[:1]
+
+            print(account_name)
+            print(request.POST)
+            return HttpResponse('Все ок')
+    else:
+        form = CreateADUserForm()
+
+    # conn = Connection(AD_SERVER, AD_USER, AD_PASSWORD)
+    # conn.bind()
+
+    # return HttpResponse(request)
+    return render(request, 'phonebook/create_ad_user.html', {'form': form})
+
+# https://github.com/cannatag/ldap3/issues/460

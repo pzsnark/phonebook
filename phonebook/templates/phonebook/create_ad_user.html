@@ -4,28 +4,11 @@
 {% block title %}Создание пользователя{% endblock %}
 
 {% block content %}
-<div class="container create-user">
+<div class="container create-user-form">
     <form method="POST" action="{% url 'phonebook:create' %}">
-        <div>
-            <label for="first-name">Имя</label>
-            <input id="first-name" type="text" placeholder="Имя">
-        </div>
-        <div>
-            <label for="last-name">Фамилия</label>
-            <input id="last-name" type="text">
-        </div>
-        <div>
-            <label for="ext-name">Отчество</label>
-            <input id="ext-name" type="text">
-        </div>
-        <div>
-            <label for="email">Почта</label>
-            <input id="email" type="email">
-        </div>
-        <div>
-            <label for="phone">Телефон</label>
-            <input id="phone" type="phone">
-        </div>
+        {% csrf_token %}
+        {{ form }}
+    <button type="submit">Отправить</button>
     </form>
 </div>
 {% endblock %}

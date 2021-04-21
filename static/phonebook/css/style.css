@@ -167,8 +167,25 @@ button {
 
 /* Create AD user */
 
-.create-user {
+.create-user-form {
     display: block;
-    width: 200px;
+    box-sizing: border-box;
+    width: 400px;
+    margin: 20px auto;
+    padding: 50px 100px;
+    border: 1px rgba(0, 0, 0, 0.1) solid;
+    text-align: center;
+    border-radius: 5px;
 }
 
+.create-user-form>form>div>input {
+    height: 1.5em;
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
+
+.create-user-form>form>div>select {
+    height: 2em;
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
