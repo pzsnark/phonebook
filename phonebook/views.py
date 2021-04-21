@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
-from ldap3 import Connection, SUBTREE, ALL_ATTRIBUTES, MODIFY_REPLACE
+from ldap3 import Connection, Server, SUBTREE, ALL_ATTRIBUTES, MODIFY_REPLACE
 import os
 import datetime
 import pytz
@@ -25,7 +25,8 @@ search_query = {
 
 
 def init_connection(search_string):
-    conn = Connection(server=AD_SERVER, user=AD_USER, password=AD_PASSWORD)
+    server = Server(AD_SERVER)
+    conn = Connection(server, user=AD_USER, password=AD_PASSWORD)
     conn.bind()
 
     # (!(UserAccountControl:1.2.840.113556.1.4.803 := 2)) активные учетные записи
