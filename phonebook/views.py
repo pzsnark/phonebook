@@ -137,8 +137,35 @@ def create_ad_user(request):
             company = form.cleaned_data.get('company')
 
             account_name = last_name + '.' + first_name[:1] + ext_name[:1]
+            userdn = f'CN={account_name},OU={company},DC=gk,DC=local'
+            domain = 'gk.local'
+            userpass = 'Qq123456'
+
+            conn = Connection(AD_SERVER, AD_USER, AD_PASSWORD)
+            conn.bind()
+
+            # create user
+            conn.add(userdn, attributes={
+                'objectClass': ['organizationalPerson', 'person', 'top', 'user'],
+                'sAMAccountName': account_name,
+                'userPrincipalName': f'{account_name}@{domain}',
+                'displayName': f'{last_name} {first_name} {ext_name}',
+                'title': title,
+                'department': department,
+                'physicalDeliveryOfficeName': location,
+                'mail': email,
+                'ipPhone': ip_phone,
+                'phone': phone,
+                'company': company
+            })
+
+            # set password
+            conn.extend.microsoft.modify_password(userdn, userpass)
+            # enable user
+            conn.modify(userdn, {'userAccountControl': [('MODIFY_REPLACE', 512)]})
 
             print(account_name)
+            print(userdn)
             print(request.POST)
             return HttpResponse('Все ок')
     else:
