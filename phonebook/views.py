@@ -127,17 +127,19 @@ def create_ad_user(request):
         if form.is_valid():
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
-            ext_name = form.cleaned_data.get('ext_name')
+            middle_name = form.cleaned_data.get('middle_name')
             title = form.cleaned_data.get('title')
             department = form.cleaned_data.get('department')
             location = form.cleaned_data.get('location')
             email = form.cleaned_data.get('email')
-            ip_phone = form.cleaned_data.get('ip_phone')
             phone = form.cleaned_data.get('phone')
+            mobile = form.cleaned_data.get('mobile')
             company = form.cleaned_data.get('company')
 
-            account_name = last_name + '.' + first_name[:1] + ext_name[:1]
-            userdn = f'CN={account_name},OU={company},DC=gk,DC=local'
+            account_name = f'{last_name}.{first_name[:1]}{middle_name[:1]}'
+            display_name = f'{last_name} {first_name} {middle_name}'
+            # userdn = f'CN={display_name},OU={company},DC=gk,DC=local'
+            dn = 'CN=Филиппов Константин Николаевич,OU=AVS,DC=gk,DC=local'
             domain = 'gk.local'
             userpass = 'Qq123456'
 
@@ -145,28 +147,28 @@ def create_ad_user(request):
             conn.bind()
 
             # create user
-            conn.add(userdn, attributes={
+            conn.add(dn, attributes={
                 'objectClass': ['organizationalPerson', 'person', 'top', 'user'],
                 'sAMAccountName': account_name,
                 'userPrincipalName': f'{account_name}@{domain}',
-                'displayName': f'{last_name} {first_name} {ext_name}',
+                'displayName': display_name,
                 'title': title,
                 'department': department,
                 'physicalDeliveryOfficeName': location,
                 'mail': email,
-                'ipPhone': ip_phone,
-                'phone': phone,
+                'telephoneNumber': phone,
+                'mobile': mobile,
                 'company': company
             })
+            print(dn)
+            print(conn.result)
 
             # set password
-            conn.extend.microsoft.modify_password(userdn, userpass)
+            # conn.extend.microsoft.modify_password(userdn, userpass)
             # enable user
-            conn.modify(userdn, {'userAccountControl': [('MODIFY_REPLACE', 512)]})
+            # conn.modify(userdn, {'userAccountControl': [('MODIFY_REPLACE', 512)]})
 
-            print(account_name)
-            print(userdn)
-            print(request.POST)
+            conn.unbind()
             return HttpResponse('Все ок')
     else:
         form = CreateADUserForm()
