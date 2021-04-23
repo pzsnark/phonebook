@@ -10,5 +10,16 @@
         {{ form }}
     <button type="submit">Отправить</button>
     </form>
+    <p>
+        {% if result %}
+            {% if result == 'success' %}
+                <span class="success">Успешно</span>
+            {% elif result == 'entryAlreadyExists' %}
+                Ошибка: <span class="warning">Пользователь уже существует</span>
+            {% else %}
+                Ошибка: <span class="warning">{{ result }}</span>
+            {% endif %}
+        {% endif %}
+    </p>
 </div>
 {% endblock %}

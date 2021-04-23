@@ -9,6 +9,7 @@ import os
 import datetime
 import pytz
 from .forms import CreateADUserForm
+from .utils import get_value, clear_dict
 
 from ldap3.core.exceptions import LDAPCursorAttributeError
 
@@ -36,14 +37,6 @@ def init_connection(search_string):
                 attributes=[ALL_ATTRIBUTES]
                 )
     return conn.entries
-
-
-def get_value(obj, field):
-    try:
-        result = getattr(obj, field).value
-    except LDAPCursorAttributeError:
-        result = ''
-    return result
 
 
 def index(request):
@@ -121,7 +114,6 @@ def status(request):
 
 @login_required()
 def create_ad_user(request):
-
     if request.method == 'POST':
         form = CreateADUserForm(request.POST)
         if form.is_valid():
@@ -138,45 +130,42 @@ def create_ad_user(request):
 
             account_name = f'{last_name}.{first_name[:1]}{middle_name[:1]}'
             display_name = f'{last_name} {first_name} {middle_name}'
-            # userdn = f'CN={display_name},OU={company},DC=gk,DC=local'
-            dn = 'CN=Филиппов Константин Николаевич,OU=AVS,DC=gk,DC=local'
+            dn = f'CN={display_name},OU={company},DC=gk,DC=local'
             domain = 'gk.local'
             userpass = 'Qq123456'
+            fields = {
+                         'sAMAccountName': account_name,
+                         'userPrincipalName': f'{account_name}@{domain}',
+                         'displayName': display_name,
+                         'title': title,
+                         'department': department,
+                         'physicalDeliveryOfficeName': location,
+                         'mail': email,
+                         'telephoneNumber': phone,
+                         'mobile': mobile,
+                         'company': company
+                     }
+
+            clear_dict(fields)
 
             conn = Connection(AD_SERVER, AD_USER, AD_PASSWORD)
             conn.bind()
 
             # create user
-            conn.add(dn, attributes={
-                'objectClass': ['organizationalPerson', 'person', 'top', 'user'],
-                'sAMAccountName': account_name,
-                'userPrincipalName': f'{account_name}@{domain}',
-                'displayName': display_name,
-                'title': title,
-                'department': department,
-                'physicalDeliveryOfficeName': location,
-                'mail': email,
-                'telephoneNumber': phone,
-                'mobile': mobile,
-                'company': company
-            })
-            print(dn)
+            conn.add(dn, ['organizationalPerson', 'person', 'top', 'user'], fields)
+            print(conn.result)
+            # set password
+            conn.extend.microsoft.modify_password(dn, userpass)
+            print(conn.result)
+            # enable user
+            conn.modify(dn, {'userAccountControl': [('MODIFY_REPLACE', 512)]})
             print(conn.result)
 
-            # set password
-            # conn.extend.microsoft.modify_password(userdn, userpass)
-            # enable user
-            # conn.modify(userdn, {'userAccountControl': [('MODIFY_REPLACE', 512)]})
-
             conn.unbind()
-            return HttpResponse('Все ок')
+            return render(request, 'phonebook/create_ad_user.html', {'result': conn.result['description'], 'form': form})
     else:
         form = CreateADUserForm()
 
-    # conn = Connection(AD_SERVER, AD_USER, AD_PASSWORD)
-    # conn.bind()
-
-    # return HttpResponse(request)
     return render(request, 'phonebook/create_ad_user.html', {'form': form})
 
 # https://github.com/cannatag/ldap3/issues/460
