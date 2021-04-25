@@ -6,20 +6,65 @@
 {% block content %}
 <div class="container create-user-form">
     <form method="POST" action="{% url 'phonebook:create' %}">
-        {% csrf_token %}
-        {{ form }}
-    <button type="submit">Отправить</button>
+    {% csrf_token %}
+        <ul>
+            <li>
+                <span class="label">*{{ form.last_name.label}}</span>
+                <span class="field">{{ form.last_name }}</span>
+            </li>
+            <li>
+                <span class="label">*{{ form.first_name.label}}</span>
+                <span class="field">{{ form.first_name }}</span>
+            </li>
+            <li>
+                <span class="label">*{{ form.middle_name.label}}</span>
+                <span class="field">{{ form.middle_name }}</span>
+            </li>
+            <li>
+                <span class="label">{{ form.title.label}}</span>
+                <span class="field">{{ form.title }}</span>
+            </li>
+            <li>
+                <span class="label">{{ form.department.label}}</span>
+                <span class="field">{{ form.department }}</span>
+            </li>
+            <li>
+                <span class="label">{{ form.location.label}}</span>
+                <span class="field">{{ form.location }}</span>
+            </li>
+            <li>
+                <span class="label">{{ form.email.label}}</span>
+                <span class="field">{{ form.email }}</span>
+            </li>
+            <li>
+                <span class="label">{{ form.phone.label}}</span>
+                <span class="field">{{ form.phone }}</span>
+            </li>
+            <li>
+                <span class="label">{{ form.mobile.label}}</span>
+                <span class="field">{{ form.mobile }}</span>
+            </li>
+            <li>
+                <span class="label">*{{ form.company.label}}</span>
+                <span class="field">{{ form.company }}</span>
+            </li>
+            <li class="create-user-form_button">
+                <button class="create-user-form_button" type="submit">Создать</button>
+            </li>
+        </ul>
     </form>
-    <p>
+    <p class="result">
         {% if result %}
             {% if result == 'success' %}
-                <span class="success">Успешно</span>
-            {% elif result == 'entryAlreadyExists' %}
+                Создан пользователь с логином <span class="success">{{ account_name }}</span>
+            {% elif result == 'entryAlreadyExists' or result == '' %}
                 Ошибка: <span class="warning">Пользователь уже существует</span>
             {% else %}
                 Ошибка: <span class="warning">{{ result }}</span>
             {% endif %}
         {% endif %}
     </p>
+    <p class="comment">Пароль Qq123456 требуется сменить при первом входе</p>
+    <p class="comment">Поля отмеченные звездочками обязательны к заполнению</p>
 </div>
 {% endblock %}

@@ -19,6 +19,7 @@ AD_SEARCH_TREE = 'dc=gk,dc=local'
 AD_SERVER = os.environ.get('AD_SERVER')
 AD_USER = os.environ.get('AD_USER')
 AD_PASSWORD = os.environ.get('AD_PASSWORD')
+SERVER = Server(AD_SERVER, port=636, use_ssl=True)
 search_query = {
     'person_company': '(&(objectCategory=Person)(&(company=*)))',
     'person_company_active': '(&(objectCategory=Person)(!(UserAccountControl:1.2.840.113556.1.4.803 := 2))(&(company=*)))'
@@ -26,8 +27,7 @@ search_query = {
 
 
 def init_connection(search_string):
-    server = Server(AD_SERVER)
-    conn = Connection(server, user=AD_USER, password=AD_PASSWORD)
+    conn = Connection(SERVER, user=AD_USER, password=AD_PASSWORD)
     conn.bind()
 
     # (!(UserAccountControl:1.2.840.113556.1.4.803 := 2)) активные учетные записи
@@ -36,12 +36,12 @@ def init_connection(search_string):
                 SUBTREE,
                 attributes=[ALL_ATTRIBUTES]
                 )
-    return conn.entries
+    return conn
 
 
 def index(request):
     selection = []
-    all_users = init_connection(search_query['person_company_active'])
+    all_users = init_connection(search_query['person_company_active']).entries
     sort = request.GET.get('sort')
     company = request.GET.get('company')
 
@@ -65,7 +65,7 @@ def index(request):
 def users(request):
     sort = request.GET.get('sort')
     selection = []
-    all_users = init_connection(search_query['person_company'])
+    all_users = init_connection(search_query['person_company']).entries
     utc = pytz.utc
     zero_lock_datetime = utc.localize(datetime.datetime(1601, 1, 1))
 
@@ -89,8 +89,7 @@ def users(request):
 
 @login_required()
 def status(request):
-    conn = Connection(AD_SERVER, AD_USER, AD_PASSWORD)
-    conn.bind()
+    conn = init_connection(search_query['person_company'])
 
     user = request.GET.get('user')
     state = request.GET.get('state')
@@ -127,6 +126,7 @@ def create_ad_user(request):
             phone = form.cleaned_data.get('phone')
             mobile = form.cleaned_data.get('mobile')
             company = form.cleaned_data.get('company')
+            require_pass_change = 0
 
             account_name = f'{last_name}.{first_name[:1]}{middle_name[:1]}'
             display_name = f'{last_name} {first_name} {middle_name}'
@@ -143,26 +143,25 @@ def create_ad_user(request):
                          'mail': email,
                          'telephoneNumber': phone,
                          'mobile': mobile,
-                         'company': company
+                         'company': company,
+                         'pwdLastSet': require_pass_change,
                      }
 
             clear_dict(fields)
 
-            conn = Connection(AD_SERVER, AD_USER, AD_PASSWORD)
-            conn.bind()
+            conn = init_connection(search_query['person_company_active'])
 
             # create user
             conn.add(dn, ['organizationalPerson', 'person', 'top', 'user'], fields)
-            print(conn.result)
+            result = conn.result
             # set password
-            conn.extend.microsoft.modify_password(dn, userpass)
-            print(conn.result)
+            conn.extend.microsoft.modify_password(dn, 'Qq123456')
             # enable user
             conn.modify(dn, {'userAccountControl': [('MODIFY_REPLACE', 512)]})
-            print(conn.result)
 
-            conn.unbind()
-            return render(request, 'phonebook/create_ad_user.html', {'result': conn.result['description'], 'form': form})
+            # conn.unbind()
+            return render(request, 'phonebook/create_ad_user.html',
+                          {'result': result['description'], 'account_name': account_name, 'form': form})
     else:
         form = CreateADUserForm()
 
