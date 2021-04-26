@@ -134,20 +134,22 @@ def create_ad_user(request):
             domain = 'gk.local'
             userpass = 'Qq123456'
             fields = {
-                         'sAMAccountName': account_name,
-                         'userPrincipalName': f'{account_name}@{domain}',
-                         'displayName': display_name,
-                         'title': title,
-                         'department': department,
-                         'physicalDeliveryOfficeName': location,
-                         'mail': email,
-                         'telephoneNumber': phone,
-                         'mobile': mobile,
-                         'company': company,
-                         'pwdLastSet': require_pass_change,
-                     }
+                'sAMAccountName': account_name,
+                'userPrincipalName': f'{account_name}@{domain}',
+                'givenName': first_name,
+                'sn': last_name,
+                'displayName': display_name,
+                'title': title,
+                'department': department,
+                'physicalDeliveryOfficeName': location,
+                'mail': email,
+                'telephoneNumber': phone,
+                'mobile': mobile,
+                'company': company,
+            }
 
             clear_dict(fields)
+            print(fields)
 
             conn = init_connection(search_query['person_company_active'])
 
@@ -156,8 +158,8 @@ def create_ad_user(request):
             result = conn.result
             # set password
             conn.extend.microsoft.modify_password(dn, 'Qq123456')
-            # enable user
-            conn.modify(dn, {'userAccountControl': [('MODIFY_REPLACE', 512)]})
+            # enable user & require change password
+            conn.modify(dn, {'userAccountControl': [('MODIFY_REPLACE', 512)], 'pwdLastSet': [('MODIFY_REPLACE', 0)]})
 
             # conn.unbind()
             return render(request, 'phonebook/create_ad_user.html',
@@ -166,5 +168,3 @@ def create_ad_user(request):
         form = CreateADUserForm()
 
     return render(request, 'phonebook/create_ad_user.html', {'form': form})
-
-# https://github.com/cannatag/ldap3/issues/460
