@@ -32,7 +32,7 @@
 
                 {% if user.is_authenticated %}
             <li><a href="{% url 'phonebook:users' %}">Пользователи</a></li>
-            <li><a href="{% url 'phonebook:create' %}">Create AD user</a></li>
+            <li><a href="{% url 'phonebook:create' %}">Создать пользователя</a></li>
                 {% else %}
                 {% endif %}
         </ul>

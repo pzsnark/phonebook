@@ -162,7 +162,7 @@ button {
     margin-top: 5px;
     box-sizing: border-box;
     height: 2em;
-    border-radius: 3px;
+    border-radius: 5px;
 }
 
 /* Create AD user */
@@ -201,10 +201,12 @@ button {
 }
 
 .field>input {
+    width: 170px;
     height: 1.5em;
 }
 
 .field>select {
+    width: 178px;
     height: 2em;
 }
 
