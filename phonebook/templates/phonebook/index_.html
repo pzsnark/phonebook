@@ -26,16 +26,57 @@
                     {% endif %}
                     {{ entry.displayName }}
                 </div>
+                <div class="company">
+                    {% if entry.company == 'ODS' %}
+                        ОблДорСтрой
+                    {% elif entry.company == 'AVS' %}
+                        АвтоВолгаСтрой
+                    {% elif entry.company == 'AVN' %}
+                        Авангард
+                    {% elif entry.company == 'ABZ' %}
+                        АБЗ №1
+                    {% elif entry.company == 'SMT' %}
+                        СМУ Тольятти
+                    {% elif entry.company == 'SMS' %}
+                        СМУ Самара
+                    {% elif entry.company == 'PNL' %}
+                        ПНЛ
+                    {% elif entry.company == 'PRS' %}
+                        Перспектива
+                    {% elif entry.company == 'VPR' %}
+                        Волга-Проект
+                    {% else %}
+                        {{ entry.company }}
+                    {% endif %}
+                </div>
                 <div class="title" title="{{ entry.title }}">
                     {% if entry.title == '[]' %}
                     {% else %}
                         {{ entry.title|truncatechars:20 }}
                     {% endif %}
                 </div>
+                  <div class="department" title="{{ entry.department }}">
+                    {% if entry.department == '[]' %}
+                    {% else %}
+                        {{ entry.department|truncatechars:20 }}
+                    {% endif %}
+                </div>
+                <div class="office">
+                    {% if entry.physicalDeliveryOfficeName == '[]' %}
+                    {% else %}
+                        {{ entry.physicalDeliveryOfficeName }}
+                    {% endif %}
+                </div>
                 <div class="phone">
                     {% if entry.phone == '[]' %}
                     {% else %}
                         {{ entry.phone }}
+                    {% endif %}
+                </div>
+                <div class="mobile">
+                    {% if entry.mobile == '[]' %}
+                    {% else %}
+                        {{ entry.mobile|format_mobile }}
                     {% endif %}
                 </div>
                 <div class="mail">
@@ -49,10 +90,7 @@
     {% else %}
     <div class="wrapper">Контекст не найден</div>
     {% endif %}
-    <div class="hidden">тыц</div>
     <br>
-    <div class="wrapper">
-        Всего записей: {{ entries|length }}
-    </div>
+    <div class="wrapper">Всего записей: {{ entries|length }}</div>
 </main>
 {% endblock %}

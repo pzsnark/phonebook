@@ -139,6 +139,10 @@ footer {
     background: rgba(0, 0, 0, 0.1)
 }
 
+.hidden {
+    display: none;
+}
+
 
 /* Формы, кнопки */
 
