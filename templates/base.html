@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Сайт{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'phonebook/css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -45,5 +46,15 @@
     <div>Последнее обновление: 21.04.2021</div>
     <div>Обратная связь: <a href="mailto:filippov@avsst.ru">filippov@avsst.ru</a></div>
 </footer>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".hidden").hide();
+    $(".wrapper").click(function () {
+        $(this).next().slideToggle("fast");
+    });
+})
+</script>
+
 </body>
 </html>

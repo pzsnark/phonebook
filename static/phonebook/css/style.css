@@ -41,13 +41,13 @@ a:hover {
 .wrapper {
     display: flex;
     margin: 0 auto;
-    width: 1520px;
+    width: 900px;
 }
 
 .container {
     display: flex;
     margin: 0 auto;
-    width: 1520px;
+    width: 900px;
 }
 
 .wrapper:hover {
@@ -140,7 +140,10 @@ footer {
 }
 
 .hidden {
-    display: none;
+    display: block;
+    overflow: hidden;
+    width: 850px;
+    margin: 0 auto;
 }
 
 

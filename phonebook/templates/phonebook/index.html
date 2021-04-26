@@ -2,17 +2,12 @@
 {% load format_mobile from tags %}
 
 {% block title %}Телефонная книга{% endblock %}
-10-+
 
 {% block content %}
 <header>
     <div class="displayname center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=displayName">ФИО</a></div>
-    <div class="company center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=company">Компания</a></div>
     <div class="title center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=title">Должность</a></div>
-    <div class="department center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=department">Отдел</a></div>
-    <div class="office center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=office">Рабочее место</a></div>
     <div class="phone center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=phone">Телефон</a></div>
-    <div class="mobile center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=mobile">Мобильный</a></div>
     <div class="mail center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=mail">Почта</a></div>
 </header>
 <main>
@@ -24,7 +19,7 @@
                         Не определено
                     {% else %}
                     {% endif %}
-                    {{ entry.displayName }}
+                    <span id="2">{{ entry.displayName }}</span>
                 </div>
                 <div class="title" title="{{ entry.title }}">
                     {% if entry.title == '[]' %}
@@ -33,9 +28,9 @@
                     {% endif %}
                 </div>
                 <div class="phone">
-                    {% if entry.phone == '[]' %}
+                    {% if entry.telephoneNumber == '[]' %}
                     {% else %}
-                        {{ entry.phone }}
+                        {{ entry.telephoneNumber }}
                     {% endif %}
                 </div>
                 <div class="mail">
@@ -45,11 +40,37 @@
                     {% endif %}
                 </div>
             </div>
+            <div class="hidden">
+                Мобильный: {{ entry.mobile }}<br>
+                Местоположение: {{ entry.physicalDeliveryOfficeName }}<br>
+                Отдел: {{ entry.department }}<br>
+                Организация:
+                {% if entry.company == 'ODS' %}
+                    ОблДорСтрой
+                {% elif entry.company == 'AVS' %}
+                    АвтоВолгаСтрой
+                {% elif entry.company == 'AVN' %}
+                    Авангард
+                {% elif entry.company == 'ABZ' %}
+                    АБЗ №1
+                {% elif entry.company == 'SMT' %}
+                    СМУ Тольятти
+                {% elif entry.company == 'SMS' %}
+                    СМУ Самара
+                {% elif entry.company == 'PNL' %}
+                    ПНЛ
+                {% elif entry.company == 'PRS' %}
+                    Перспектива
+                {% elif entry.company == 'VPR' %}
+                    Волга-Проект
+                {% else %}
+                {% endif %}
+            </div>
         {% endfor %}
     {% else %}
     <div class="wrapper">Контекст не найден</div>
     {% endif %}
-    <div class="hidden">тыц</div>
+
     <br>
     <div class="wrapper">
         Всего записей: {{ entries|length }}
