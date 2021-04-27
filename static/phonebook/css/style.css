@@ -42,6 +42,7 @@ a:hover {
     display: flex;
     margin: 0 auto;
     width: 900px;
+    cursor: pointer;
 }
 
 .container {
