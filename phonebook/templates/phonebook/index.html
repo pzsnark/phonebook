@@ -5,10 +5,10 @@
 
 {% block content %}
 <header>
-    <div class="displayname center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=displayName">ФИО</a></div>
-    <div class="title center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=title">Должность</a></div>
-    <div class="phone center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=phone">Телефон</a></div>
-    <div class="mail center"><a href="{{ request.path }}{% if company %}?company={{ company }}&{% endif %}?sort=mail">Почта</a></div>
+    <div class="displayname center"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=displayName{% else %}?sort=displayName{% endif %}">ФИО</a></div>
+    <div class="title center"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=displayName{% else %}?sort=displayName{% endif %}">Должность</a></div>
+    <div class="phone center"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=phone{% else %}?sort=phone{% endif %}">Телефон</a></div>
+    <div class="mail center"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=mail{% else %}?sort=mail{% endif %}">Почта</a></div>
 </header>
 <main>
     {% if entries %}

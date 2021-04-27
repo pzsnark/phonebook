@@ -1,4 +1,7 @@
-# получаем рузельтат
+from ldap3.core.exceptions import LDAPCursorAttributeError
+
+
+# получаем значение из объекта
 def get_value(obj, field):
     try:
         result = getattr(obj, field).value

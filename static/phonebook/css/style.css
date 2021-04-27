@@ -11,8 +11,12 @@ header {
     top: 0;
     background-color: #fff;
     border-bottom: rgba(0, 0, 0, 0.1) 1px solid;
-    width: 1520px;
+    width: 900px;
     margin: 0 auto;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 ul {
@@ -110,7 +114,7 @@ a:hover {
 
 footer {
     display: block;
-    width: 1500px;
+    width: 900px;
     text-align: center;
     border-top: rgba(0, 0, 0, 0.1) 1px solid;
     margin: 0 auto;
@@ -168,7 +172,6 @@ td>input {
 
 button {
     margin-top: 5px;
-    box-sizing: border-box;
     height: 2em;
     border-radius: 5px;
 }
