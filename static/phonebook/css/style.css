@@ -3,6 +3,7 @@ body {
     font-size: 14px;
     line-height: 20px;
     margin: 0;
+    background-color:rgba(0, 0, 0, 0.1);
 }
 
 header {
@@ -10,9 +11,10 @@ header {
     position: sticky;
     top: 0;
     background-color: #fff;
-    border-bottom: rgba(0, 0, 0, 0.1) 1px solid;
-    width: 900px;
+    border: rgba(0, 0, 0, 0.2) 1px solid;
+    width: 902px;
     margin: 0 auto;
+    padding-left: 50p;
 }
 
 * {
@@ -45,19 +47,31 @@ a:hover {
 .wrapper {
     display: flex;
     margin: 0 auto;
-    width: 900px;
+    width: 902px;
+    padding: 0 50px;
     cursor: pointer;
-}
-
-.container {
-    display: flex;
-    margin: 0 auto;
-    width: 900px;
+    background-color: #fff;
+    border-left: rgba(0, 0, 0, 0.2) solid 1px;
+    border-right: rgba(0, 0, 0, 0.2) solid 1px;
 }
 
 .wrapper:hover {
     background: rgba(0, 0, 0, 0.1);
     transition-duration: 0.1s;
+}
+
+.entries-length {
+    width: 902px;
+    margin: 0 auto;
+    padding-left: 50px;
+    border: rgba(0, 0, 0, 0.2) solid 1px;
+    background-color: #fff;
+}
+
+.container {
+    display: flex;
+    margin: 0 auto;
+    width: 902px;
 }
 
 .displayname {
@@ -81,7 +95,7 @@ a:hover {
 }
 
 .phone {
-    min-width: 100px;
+    min-width: 50px;
 }
 
 .mobile {
@@ -114,19 +128,14 @@ a:hover {
 
 footer {
     display: block;
-    width: 900px;
+    width: 902px;
     text-align: center;
-    border-top: rgba(0, 0, 0, 0.1) 1px solid;
     margin: 0 auto;
     padding: 20px; 
 }
 
 .center {
     text-align: center;
-}
-
-.header {
-    position: fixed;
 }
 
 .margin-top {
@@ -139,7 +148,7 @@ footer {
     position: fixed;
     top: 30px;
     left: 5px;
-    border: rgba(0, 0, 0, 0.1) 1px solid;
+    border: rgba(0, 0, 0, 0.2) 1px solid;
     padding: 5px 5px;
     background: rgba(0, 0, 0, 0.1)
 }
@@ -147,8 +156,12 @@ footer {
 .hidden {
     display: block;
     overflow: hidden;
-    width: 850px;
+    width: 902px;
+    padding-left: 75px;
     margin: 0 auto;
+    background-color: #fff;
+    border-right: rgba(0, 0, 0, 0.2) solid 1px;
+    border-left: rgba(0, 0, 0, 0.2) solid 1px;
 }
 
 

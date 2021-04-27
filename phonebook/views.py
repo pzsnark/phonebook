@@ -126,13 +126,11 @@ def create_ad_user(request):
             phone = form.cleaned_data.get('phone')
             mobile = form.cleaned_data.get('mobile')
             company = form.cleaned_data.get('company')
-            require_pass_change = 0
 
             account_name = f'{last_name}.{first_name[:1]}{middle_name[:1]}'
             display_name = f'{last_name} {first_name} {middle_name}'
             dn = f'CN={display_name},OU={company},DC=gk,DC=local'
             domain = 'gk.local'
-            userpass = 'Qq123456'
             fields = {
                 'sAMAccountName': account_name,
                 'userPrincipalName': f'{account_name}@{domain}',

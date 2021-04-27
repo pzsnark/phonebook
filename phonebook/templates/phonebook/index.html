@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load format_mobile from tags %}
+{% load format_groups from tags %}
 
 {% block title %}Телефонная книга{% endblock %}
 
 {% block content %}
-<header>
-    <div class="displayname center"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=displayName{% else %}?sort=displayName{% endif %}">ФИО</a></div>
-    <div class="title center"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=displayName{% else %}?sort=displayName{% endif %}">Должность</a></div>
-    <div class="phone center"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=phone{% else %}?sort=phone{% endif %}">Телефон</a></div>
-    <div class="mail center"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=mail{% else %}?sort=mail{% endif %}">Почта</a></div>
+<header class="wrapper">
+    <div class="center displayname"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=displayName{% else %}?sort=displayName{% endif %}">ФИО</a></div>
+    <div class="center title"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=title{% else %}?sort=title{% endif %}">Должность</a></div>
+    <div class="center phone"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=phone{% else %}?sort=phone{% endif %}">Телефон</a></div>
+    <div class="center mail"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=mail{% else %}?sort=mail{% endif %}">Почта</a></div>
 </header>
 <main>
     {% if entries %}
@@ -46,24 +47,29 @@
                 Отдел: {{ entry.department }}<br>
                 Организация:
                 {% if entry.company == 'ODS' %}
-                    ОблДорСтрой
+                    ОблДорСтрой<br>
                 {% elif entry.company == 'AVS' %}
-                    АвтоВолгаСтрой
+                    АвтоВолгаСтрой<br>
                 {% elif entry.company == 'AVN' %}
-                    Авангард
+                    Авангард<br>
                 {% elif entry.company == 'ABZ' %}
-                    АБЗ №1
+                    АБЗ №1<br>
                 {% elif entry.company == 'SMT' %}
-                    СМУ Тольятти
+                    СМУ Тольятти<br>
                 {% elif entry.company == 'SMS' %}
-                    СМУ Самара
+                    СМУ Самара<br>
                 {% elif entry.company == 'PNL' %}
-                    ПНЛ
+                    ПНЛ<br>
                 {% elif entry.company == 'PRS' %}
-                    Перспектива
+                    Перспектива<br>
                 {% elif entry.company == 'VPR' %}
-                    Волга-Проект
+                    Волга-Проект<br>
                 {% else %}
+                {% endif %}
+                {% if user.is_authenticated %}
+                    {% for group in entry.memberOf %}
+                        {{ group|format_groups }}<br>
+                    {% endfor %}
                 {% endif %}
             </div>
         {% endfor %}
@@ -71,8 +77,7 @@
     <div class="wrapper">Контекст не найден</div>
     {% endif %}
 
-    <br>
-    <div class="wrapper">
+    <div class="entries-length">
         Всего записей: {{ entries|length }}
     </div>
 </main>
