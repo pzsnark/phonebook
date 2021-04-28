@@ -226,11 +226,12 @@ button {
 
 .field>input {
     width: 170px;
-    height: 1.5em;
+    height: 2em;
+    padding-left: 5px;
 }
 
 .field>select {
-    width: 178px;
+    width: 170px;
     height: 2em;
 }
 

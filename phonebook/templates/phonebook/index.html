@@ -67,9 +67,13 @@
                 {% else %}
                 {% endif %}
                 {% if user.is_authenticated %}
+                Группы:
                     {% for group in entry.memberOf %}
-                        {{ group|format_groups }}<br>
+                        {{ group|format_groups }},
                     {% endfor %}
+                    <br>
+                    Создана: {{ entry.whenCreated.value|date:"d.m.Y" }}<br>
+                    <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state={% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}disable{% else %}enable{% endif %}">{% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}Disable{% else %}Enable{% endif %}</a>
                 {% endif %}
             </div>
         {% endfor %}

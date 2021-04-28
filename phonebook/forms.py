@@ -13,7 +13,13 @@ class Select(forms.Select):
         return option
 
 
+class UsernameField(forms.CharField):
+    def to_python(self, value):
+        return value.lower()
+
+
 class CreateADUserForm(forms.Form):
+
     COMPANY_CHOICES = [
         ('', 'Выберите организацию'),
         ('ABZ', 'АБЗ №1'),
