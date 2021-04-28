@@ -1,4 +1,6 @@
 from django import forms
+# from django.contrib.auth import forms
+import unicodedata
 
 
 class Select(forms.Select):
@@ -13,9 +15,10 @@ class Select(forms.Select):
         return option
 
 
-class UsernameField(forms.CharField):
+class UsernameFields:
     def to_python(self, value):
-        return value.lower()
+        value = value.lower()
+        return unicodedata.normalize('NFKC', super().to_python(value))
 
 
 class CreateADUserForm(forms.Form):
