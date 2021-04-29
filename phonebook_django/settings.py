@@ -186,7 +186,7 @@ AUTH_LDAP_GROUP_TYPE = ActiveDirectoryGroupType(name_attr="cn")
 
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
             "is_active": "cn=IT,cn=users,dc=gk,dc=local",
-            "is_superuser": "cn=IT,cn=Users,dc=gk,dc=local",
+            # "is_superuser": "cn=IT,cn=Users,dc=gk,dc=local",
             "is_staff": "cn=IT,cn=Users,dc=gk,dc=local",
             }
 

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -11,7 +11,6 @@ import pytz
 from .forms import CreateADUserForm
 from .utils import get_value, clear_dict
 
-from ldap3.core.exceptions import LDAPCursorAttributeError
 
 from phonebook_django.settings import CACHE_TTL
 
@@ -44,6 +43,8 @@ def index(request):
     all_users = init_connection(search_query['person_company_active']).entries
     sort = request.GET.get('sort')
     company = request.GET.get('company')
+    utc = pytz.utc
+    zero_lock_datetime = utc.localize(datetime.datetime(1601, 1, 1))
 
     if sort is None:
         sort = 'displayName'
@@ -53,10 +54,15 @@ def index(request):
         if entry.company.value == company:
             selection.append(entry)
 
+    context = {
+        'company': company,
+        'zero_lock_datetime': zero_lock_datetime,
+    }
+
     if len(selection) == 0:
-        context = {'entries': all_users, 'company': company}
+        context['entries'] = all_users
     else:
-        context = {'entries': selection, 'company': company}
+        context['entries'] = selection
 
     return render(request, 'phonebook/index.html', context)
 
@@ -68,8 +74,6 @@ def users(request):
     all_users = init_connection(search_query['person_company']).entries
     utc = pytz.utc
     zero_lock_datetime = utc.localize(datetime.datetime(1601, 1, 1))
-
-    print(zero_lock_datetime)
 
     if sort is None:
         sort = 'displayName'
@@ -105,10 +109,9 @@ def status(request):
 
     conn.modify(user,
                 {field: [(MODIFY_REPLACE, [state])]})
-    print(conn.result)
     conn.unbind()
 
-    return HttpResponseRedirect(reverse('phonebook:users'))
+    return HttpResponseRedirect(reverse('phonebook:index'))
 
 
 @login_required()
@@ -147,7 +150,6 @@ def create_ad_user(request):
             }
 
             clear_dict(fields)
-            print(fields)
 
             conn = init_connection(search_query['person_company_active'])
 

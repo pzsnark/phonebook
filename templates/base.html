@@ -32,8 +32,10 @@
             <li><a href="{% url 'phonebook:index' %}">Все</a></li>
 
                 {% if user.is_authenticated %}
-            <li><a href="{% url 'phonebook:users' %}">Пользователи</a></li>
             <li><a href="{% url 'phonebook:create' %}">Создать пользователя</a></li>
+                    {% if user.username == 'filippov' %}
+            <li><a href="{% url 'admin:index' %}">Admin</a></li>
+                    {% endif %}
                 {% else %}
                 {% endif %}
         </ul>
@@ -43,7 +45,7 @@
 {% endblock %}
 <footer>
     <div>Developed by Филиппов Константин</div>
-    <div>Последнее обновление: 27.04.2021</div>
+    <div>Последнее обновление: 29.04.2021</div>
     <div>Обратная связь: <a href="mailto:filippov@avsst.ru">filippov@avsst.ru</a></div>
 </footer>
 

@@ -1,6 +1,5 @@
 from django import forms
 # from django.contrib.auth import forms
-import unicodedata
 
 
 class Select(forms.Select):
@@ -13,12 +12,6 @@ class Select(forms.Select):
             option['attrs']['disabled'] = 'disabled'
 
         return option
-
-
-class UsernameFields:
-    def to_python(self, value):
-        value = value.lower()
-        return unicodedata.normalize('NFKC', super().to_python(value))
 
 
 class CreateADUserForm(forms.Form):

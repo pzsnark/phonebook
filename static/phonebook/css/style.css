@@ -187,6 +187,7 @@ button {
     margin-top: 5px;
     height: 2em;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 /* Create AD user */

@@ -42,9 +42,15 @@
                 </div>
             </div>
             <div class="hidden">
-                Мобильный: {{ entry.mobile|format_mobile }}<br>
-                Местоположение: {{ entry.physicalDeliveryOfficeName }}<br>
-                Отдел: {{ entry.department }}<br>
+                {% if entry.mobile %}
+                    Мобильный: {{ entry.mobile|format_mobile }}<br>
+                {% endif %}
+                {% if entry.physicalDeliveryOfficeName %}
+                    Местоположение: {{ entry.physicalDeliveryOfficeName }}<br>
+                {% endif %}
+                {% if entry.department %}
+                    Отдел: {{ entry.department }}<br>
+                {% endif %}
                 Организация:
                 {% if entry.company == 'ODS' %}
                     ОблДорСтрой<br>
@@ -67,13 +73,23 @@
                 {% else %}
                 {% endif %}
                 {% if user.is_authenticated %}
-                Группы:
-                    {% for group in entry.memberOf %}
-                        {{ group|format_groups }},
-                    {% endfor %}
+                    {% if entry.memberOf %}Группы:
+                        {% for group in entry.memberOf %}
+                            {{ group|format_groups }}{% if forloop.last %}{% else %},{% endif %}
+                        {% endfor %}
                     <br>
+                    {% endif %}
                     Создана: {{ entry.whenCreated.value|date:"d.m.Y" }}<br>
+                    {% if entry.lastLogonTimestamp.value %}
+                        <span title="Неточное значение (репликация дольше двух недель)">Последний вход: {{ entry.lastLogonTimestamp.value }}</span><br>
+                    {% endif %}
                     <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state={% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}disable{% else %}enable{% endif %}">{% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}Disable{% else %}Enable{% endif %}</a>
+                    {% if entry.lockoutTime.value %}
+                        {% if entry.lockoutTime.value == zero_lock_datetime %}
+                        {% else %}
+                            Дата блокировки: {{ entry.lockoutTime.value }} <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state=unlock">Разблокировать</a>
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
             </div>
         {% endfor %}
