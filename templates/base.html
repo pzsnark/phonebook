@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
-<div class="container">
+<div class="container expand">
 {% block auth %}
     {% if user.is_authenticated %}
         Пользователь: {{ user.last_name }} {{ user.first_name}} (<a href="{% url 'logout' %}">Выйти</a>)
@@ -16,6 +16,14 @@
         <a href="{% url 'login' %}">Войти</a>
     {% endif %}
 {% endblock %}
+</div>
+<div class="hidden">
+    {% if user.username == 'filippov' %}
+        <ul>
+            <li><a href="{% url 'admin:index' %}">Админ панель</a></li>
+            <li><a href="#">Изменить пароль</a></li>
+        </ul>
+    {% endif %}
 </div>
     <div class="aboard">
         <ul>
@@ -31,13 +39,9 @@
             <li>---</li>
             <li><a href="{% url 'phonebook:index' %}">Все</a></li>
 
-                {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
             <li><a href="{% url 'phonebook:create' %}">Создать пользователя</a></li>
-                    {% if user.username == 'filippov' %}
-            <li><a href="{% url 'admin:index' %}">Admin</a></li>
-                    {% endif %}
-                {% else %}
-                {% endif %}
+            {% endif %}
         </ul>
     </div>
 {% block content %}
@@ -45,14 +49,14 @@
 {% endblock %}
 <footer>
     <div>Developed by Филиппов Константин</div>
-    <div>Последнее обновление: 29.04.2021</div>
+    <div>Последнее обновление: 03.05.2021</div>
     <div>Обратная связь: <a href="mailto:filippov@avsst.ru">filippov@avsst.ru</a></div>
 </footer>
 
 <script type="text/javascript">
 $(document).ready(function(){
     $(".hidden").hide();
-    $(".wrapper").click(function () {
+    $(".expand").click(function () {
         $(this).next().slideToggle("fast");
     });
 })

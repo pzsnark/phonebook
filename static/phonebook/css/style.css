@@ -49,13 +49,18 @@ a:hover {
     margin: 0 auto;
     width: 902px;
     padding: 0 50px;
-    cursor: pointer;
     background-color: #fff;
     border-left: rgba(0, 0, 0, 0.2) solid 1px;
     border-right: rgba(0, 0, 0, 0.2) solid 1px;
 }
 
 .wrapper:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transition-duration: 0.1s;
+}
+
+.expand:hover {
+    cursor: pointer;
     background: rgba(0, 0, 0, 0.1);
     transition-duration: 0.1s;
 }

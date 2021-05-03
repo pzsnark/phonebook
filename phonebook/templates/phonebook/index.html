@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load format_mobile from tags %}
 {% load format_groups from tags %}
+{% load format_description from tags %}
 
 {% block title %}Телефонная книга{% endblock %}
 
 {% block content %}
-<header class="wrapper">
+<header class="wrapper expand">
     <div class="center displayname"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=displayName{% else %}?sort=displayName{% endif %}">ФИО</a></div>
     <div class="center title"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=title{% else %}?sort=title{% endif %}">Должность</a></div>
     <div class="center phone"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=phone{% else %}?sort=phone{% endif %}">Телефон</a></div>
@@ -14,7 +15,7 @@
 <main>
     {% if entries %}
         {% for entry in entries %}
-            <div class="wrapper">
+            <div class="wrapper expand">
                 <div class="displayname">
                     {% if entry.displayName == '[]' %}
                         Не определено
@@ -42,55 +43,72 @@
                 </div>
             </div>
             <div class="hidden">
-                {% if entry.mobile %}
-                    Мобильный: {{ entry.mobile|format_mobile }}<br>
-                {% endif %}
-                {% if entry.physicalDeliveryOfficeName %}
-                    Местоположение: {{ entry.physicalDeliveryOfficeName }}<br>
-                {% endif %}
-                {% if entry.department %}
-                    Отдел: {{ entry.department }}<br>
-                {% endif %}
-                Организация:
-                {% if entry.company == 'ODS' %}
-                    ОблДорСтрой<br>
-                {% elif entry.company == 'AVS' %}
-                    АвтоВолгаСтрой<br>
-                {% elif entry.company == 'AVN' %}
-                    Авангард<br>
-                {% elif entry.company == 'ABZ' %}
-                    АБЗ №1<br>
-                {% elif entry.company == 'SMT' %}
-                    СМУ Тольятти<br>
-                {% elif entry.company == 'SMS' %}
-                    СМУ Самара<br>
-                {% elif entry.company == 'PNL' %}
-                    ПНЛ<br>
-                {% elif entry.company == 'PRS' %}
-                    Перспектива<br>
-                {% elif entry.company == 'VPR' %}
-                    Волга-Проект<br>
-                {% else %}
-                {% endif %}
-                {% if user.is_authenticated %}
-                    {% if entry.memberOf %}Группы:
-                        {% for group in entry.memberOf %}
-                            {{ group|format_groups }}{% if forloop.last %}{% else %},{% endif %}
-                        {% endfor %}
-                    <br>
-                    {% endif %}
-                    Создана: {{ entry.whenCreated.value|date:"d.m.Y" }}<br>
-                    {% if entry.lastLogonTimestamp.value %}
-                        <span title="Неточное значение (репликация дольше двух недель)">Последний вход: {{ entry.lastLogonTimestamp.value }}</span><br>
-                    {% endif %}
-                    <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state={% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}disable{% else %}enable{% endif %}">{% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}Disable{% else %}Enable{% endif %}</a>
-                    {% if entry.lockoutTime.value %}
-                        {% if entry.lockoutTime.value == zero_lock_datetime %}
-                        {% else %}
-                            Дата блокировки: {{ entry.lockoutTime.value }} <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state=unlock">Разблокировать</a>
+                <ul>
+                    <li>
+                        {% if entry.mobile %}
+                            Мобильный: {{ entry.mobile|format_mobile }}
                         {% endif %}
+                    </li>
+                    <li>
+                        {% if entry.physicalDeliveryOfficeName %}
+                            Местоположение: {{ entry.physicalDeliveryOfficeName }}
+                        {% endif %}
+                    </li>
+                    <li>
+                        {% if entry.department %}
+                            Отдел: {{ entry.department }}
+                        {% endif %}
+                    </li>
+                    <li>
+                        Организация:
+                        {% if entry.company == 'ODS' %}
+                            ОблДорСтрой
+                        {% elif entry.company == 'AVS' %}
+                            АвтоВолгаСтрой
+                        {% elif entry.company == 'AVN' %}
+                            Авангард
+                        {% elif entry.company == 'ABZ' %}
+                            АБЗ №1
+                        {% elif entry.company == 'SMT' %}
+                            СМУ Тольятти
+                        {% elif entry.company == 'SMS' %}
+                            СМУ Самара
+                        {% elif entry.company == 'PNL' %}
+                            ПНЛ
+                        {% elif entry.company == 'PRS' %}
+                            Перспектива
+                        {% elif entry.company == 'VPR' %}
+                            Волга-Проект
+                        {% else %}
+                        {% endif %}
+                    </li>
+                        {% if user.is_authenticated %}
+                    <li>
+                        {% if entry.memberOf %}Группы:
+                            {% for group in entry.memberOf %}
+                                {{ group|format_groups }}{% if forloop.last %}{% else %},{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </li>
+                    <li>    
+                        Создана: {{ entry.whenCreated.value|date:"d.m.Y" }}
+                    </li>
+                    <li>
+                        {% if entry.description %}
+                            {{ entry.description|format_description }}
+                        {% endif %}
+                    </li>
+                    <li>
+                        <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state={% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}disable{% else %}enable{% endif %}">{% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}Disable{% else %}Enable{% endif %}</a>
+                        {% if entry.lockoutTime.value %}
+                            {% if entry.lockoutTime.value == zero_lock_datetime %}
+                            {% else %}
+                                Дата блокировки: {{ entry.lockoutTime.value }} <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state=unlock">Разблокировать</a>
+                            {% endif %}
+                        {% endif %}
+                    </li>
                     {% endif %}
-                {% endif %}
+                </ul>
             </div>
         {% endfor %}
     {% else %}

@@ -15,3 +15,14 @@ def format_mobile(string):
 @stringfilter
 def format_groups(string):
     return string[3:].split(',')[0]
+
+
+@register.filter
+@stringfilter
+def format_description(string):  # добавить проверку строки
+    string = string.split(' ')
+    if len(string) != 3:
+        return 'Неверный формат описания'
+    else:
+        string = 'Вход на ' + string[0] + ' ' + string[1] + ' в ' + string[2]
+    return string
