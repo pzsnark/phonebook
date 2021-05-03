@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'rz4w+e(5194r97@izee&bf#e%ty2fe(n_u!n)xpy@_&hgq8vty'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -154,8 +154,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-LOGIN_REDIRECT_URL = '/phonebook/'
-LOGOUT_REDIRECT_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = '/app/phonebook/'
+LOGOUT_REDIRECT_URL = '/app/accounts/login'
 
 
 # ---------
