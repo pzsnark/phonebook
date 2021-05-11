@@ -1,4 +1,3 @@
-
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -9,7 +8,7 @@ import os
 import datetime
 import pytz
 from .forms import CreateADUserForm
-from .utils import get_value, clear_dict
+from .utils import get_value, clear_dict, visit_log, get_visit_log
 
 
 from phonebook_django.settings import CACHE_TTL
@@ -39,6 +38,8 @@ def init_connection(search_string):
 
 
 def index(request):
+    visit_log(request)
+
     selection = []
     all_users = init_connection(search_query['person_company_active']).entries
     sort = request.GET.get('sort')
@@ -55,6 +56,7 @@ def index(request):
             selection.append(entry)
 
     context = {
+        'visit_logs': get_visit_log(),
         'company': company,
         'zero_lock_datetime': zero_lock_datetime,
     }

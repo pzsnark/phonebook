@@ -1,3 +1,13 @@
+import datetime
+from django.utils import timezone
 from django.db import models
 
-# Create your models here.
+
+class VisitLog(models.Model):
+    ipaddress = models.GenericIPAddressField(protocol='ipv4')
+    hostname = models.CharField(max_length=255, default='unknown', null=True)
+    username = models.CharField(max_length=255, default='unknown', null=True)
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return str(self.ipaddress)

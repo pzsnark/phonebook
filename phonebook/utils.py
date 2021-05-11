@@ -1,4 +1,5 @@
 from ldap3.core.exceptions import LDAPCursorAttributeError
+from .models import VisitLog
 
 
 # получаем значение из объекта
@@ -18,19 +19,18 @@ def clear_dict(dictionary):
             dictionary.pop(key)
     return dictionary
 
-#
-# def format_groups(entries):
-#     groups = []
-#     for entry in entries:
-#         for group in entry.memberOf:
-#             group = groups.append(group[3:].split(',')[0])
-#     return groups
 
-# if 'memberOf' in i[1]:
-#           g=[]
-#           for z in i[1]['memberOf']:
-#               z=z.decode('utf8')
-#               z=z[3:]
-#               z=z.split(',')[0]
-#               g.append(z)
-#           user['memberOf']=g
+# записываем данные посещения
+def visit_log(request):
+    ipaddress = request.META.get('REMOTE_ADDR')
+    hostname = request.META.get('REMOTE_HOSbT')
+    username = request.META.get('USERNAME')
+    visit = VisitLog(ipaddress=ipaddress, hostname=hostname, username=username)
+    visit.save()
+
+
+def get_visit_log():
+    all_records = VisitLog.objects.all().count()
+    unique_records = VisitLog.objects.order_by().values('ipaddress').distinct().count()
+    visit_counts = (all_records, unique_records)
+    return visit_counts

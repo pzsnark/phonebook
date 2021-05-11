@@ -1,3 +1,10 @@
 from django.contrib import admin
+from .models import VisitLog
 
-# Register your models here.
+
+# admin.site.register(VisitLog)
+
+
+@admin.register(VisitLog)
+class VisitLogAdmin(admin.ModelAdmin):
+    list_display = ('ipaddress', 'hostname', 'username', 'date')
