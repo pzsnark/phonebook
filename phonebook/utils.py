@@ -1,5 +1,7 @@
 from ldap3.core.exceptions import LDAPCursorAttributeError
 from .models import VisitLog
+import socket
+
 
 # получаем значение из объекта
 def get_value(obj, field):
@@ -22,9 +24,10 @@ def clear_dict(dictionary):
 # записываем данные посещения
 def visit_log(request):
     ipaddress = request.META.get('REMOTE_ADDR')
-    hostname = request.META.get('COMPUTERNAME')
-    username = request.META.get('USERNAME')
-    visit = VisitLog(ipaddress=ipaddress, hostname=hostname, username=username)
+    hostname = (socket.gethostbyaddr(ipaddress))[0]
+    print(hostname)
+    http_referer = request.META.get('HTTP_REFERER')
+    visit = VisitLog(ipaddress=ipaddress, hostname=hostname, http_referer=http_referer)
     visit.save()
 
 

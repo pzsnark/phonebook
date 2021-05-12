@@ -7,4 +7,4 @@ from .models import VisitLog
 
 @admin.register(VisitLog)
 class VisitLogAdmin(admin.ModelAdmin):
-    list_display = ('ipaddress', 'hostname', 'username', 'date')
+    list_display = ('ipaddress', 'http_referer', 'date')

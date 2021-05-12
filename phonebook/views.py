@@ -9,6 +9,7 @@ import datetime
 import pytz
 from .forms import CreateADUserForm
 from .utils import get_value, clear_dict, visit_log, get_visit_log
+from django.core.paginator import Paginator
 
 
 from phonebook_django.settings import CACHE_TTL
@@ -176,4 +177,6 @@ def create_ad_user(request):
 @login_required()
 def visit_log_view(request):
     context = get_visit_log()
+    paginator = Paginator(context, 25)
+
     return render(request, 'phonebook/visit_log.html', context)

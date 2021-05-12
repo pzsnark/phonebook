@@ -18,16 +18,14 @@
             <div class="wrapper expand">
                 <div class="displayname">
                     {% if entry.displayName %}
-                        <span id="2">{{ entry.displayName }}</span>
+                        {{ entry.displayName }}
                     {% else %}
-                        Не определено
                     {% endif %}
                 </div>
                 <div class="title" title="{{ entry.title }}">
                     {% if entry.title %}
                         {{ entry.title|truncatechars:20 }}
                     {% else %}
-                        Не определено
                     {% endif %}
                 </div>
                 <div class="phone">
@@ -40,7 +38,6 @@
                     {% if entry.mail %}
                         {{ entry.mail|lower }}
                     {% else %}
-                        Не определено
                     {% endif %}
                 </div>
             </div>

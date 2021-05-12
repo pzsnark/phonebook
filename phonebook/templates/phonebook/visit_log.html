@@ -9,7 +9,7 @@
     {% if all_records %}
         {% for record in all_records %}
             <div class="wrapper">
-                {{ record.ipaddress }} {{ record.hostname }} {{ record.username }} {{ record.date }}
+                {{ record.ipaddress }} {{ record.hostname }} {{ record.http_referer }} {{ record.date }}
             </div>
         {% endfor %}
     {% else %}

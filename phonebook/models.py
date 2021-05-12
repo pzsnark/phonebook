@@ -5,8 +5,8 @@ from django.db import models
 
 class VisitLog(models.Model):
     ipaddress = models.GenericIPAddressField(protocol='ipv4')
-    hostname = models.CharField(max_length=255, default='unknown', null=True)
-    username = models.CharField(max_length=255, default='unknown', null=True)
+    hostname = models.CharField(max_length=255, null=True)
+    http_referer = models.CharField(max_length=255, null=True)
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
