@@ -179,4 +179,8 @@ def visit_log_view(request):
     context = get_visit_log()
     paginator = Paginator(context, 25)
 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context.update()
+
     return render(request, 'phonebook/visit_log.html', context)
