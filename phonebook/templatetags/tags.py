@@ -1,8 +1,9 @@
 from django import template
 from django.template.defaultfilters import stringfilter
-import re
+from loguru import logger
 
 register = template.Library()
+logger.add('debug.log', format='{time:DD-MM-YYYY HH:mm} {level} {message}', level='DEBUG', rotation='100 KB', compression='zip')
 
 
 @register.filter
@@ -22,6 +23,7 @@ def format_groups(string):
 def format_description(string):  # добавить проверку строки
     string = string.split(' ')
     if len(string) != 3:
+        logger.warning('Invalid description format')
         return 'Неверный формат описания'
     else:
         string = 'Вход на ' + string[0] + ' ' + string[1] + ' в ' + string[2]

@@ -22,7 +22,9 @@
         <ul>
             <li><a href="{% url 'admin:index' %}">Админ панель</a></li>
             <li><a href="#">Изменить пароль</a></li>
-            <li>{{ visit_logs }}</li>
+            <li>Всего посещений: {{ all_records|length }}</li>
+            <li>Уникальных: {{ unique_records|length }}</li>
+            <li><a href="{% url 'phonebook:visit_log_view' %}">Журнал</a></li>
         </ul>
     {% endif %}
 </div>
@@ -50,7 +52,7 @@
 {% endblock %}
 <footer>
     <div>Developed by Филиппов Константин</div>
-    <div>Последнее обновление: 03.05.2021</div>
+    <div>Последнее обновление: 12.05.2021</div>
     <div>Обратная связь: <a href="mailto:filippov@avsst.ru">filippov@avsst.ru</a></div>
 </footer>
 

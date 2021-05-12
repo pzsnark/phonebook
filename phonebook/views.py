@@ -39,6 +39,7 @@ def init_connection(search_string):
 
 def index(request):
     visit_log(request)
+    visit = get_visit_log()
 
     selection = []
     all_users = init_connection(search_query['person_company_active']).entries
@@ -56,10 +57,10 @@ def index(request):
             selection.append(entry)
 
     context = {
-        'visit_logs': get_visit_log(),
         'company': company,
         'zero_lock_datetime': zero_lock_datetime,
     }
+    context.update(visit)
 
     if len(selection) == 0:
         context['entries'] = all_users
@@ -170,3 +171,9 @@ def create_ad_user(request):
         form = CreateADUserForm()
 
     return render(request, 'phonebook/create_ad_user.html', {'form': form})
+
+
+@login_required()
+def visit_log_view(request):
+    context = get_visit_log()
+    return render(request, 'phonebook/visit_log.html', context)

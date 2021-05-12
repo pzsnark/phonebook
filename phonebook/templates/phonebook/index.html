@@ -6,7 +6,7 @@
 {% block title %}Телефонная книга{% endblock %}
 
 {% block content %}
-<header class="wrapper expand">
+<header class="container">
     <div class="center displayname"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=displayName{% else %}?sort=displayName{% endif %}">ФИО</a></div>
     <div class="center title"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=title{% else %}?sort=title{% endif %}">Должность</a></div>
     <div class="center phone"><a href="{{ request.path }}{% if company %}?company={{ company }}&sort=phone{% else %}?sort=phone{% endif %}">Телефон</a></div>
@@ -17,28 +17,30 @@
         {% for entry in entries %}
             <div class="wrapper expand">
                 <div class="displayname">
-                    {% if entry.displayName == '[]' %}
-                        Не определено
+                    {% if entry.displayName %}
+                        <span id="2">{{ entry.displayName }}</span>
                     {% else %}
+                        Не определено
                     {% endif %}
-                    <span id="2">{{ entry.displayName }}</span>
                 </div>
                 <div class="title" title="{{ entry.title }}">
-                    {% if entry.title == '[]' %}
-                    {% else %}
+                    {% if entry.title %}
                         {{ entry.title|truncatechars:20 }}
+                    {% else %}
+                        Не определено
                     {% endif %}
                 </div>
                 <div class="phone">
-                    {% if entry.telephoneNumber == '[]' %}
-                    {% else %}
+                    {% if entry.telephoneNumber %}
                         {{ entry.telephoneNumber }}
+                    {% else %}
                     {% endif %}
                 </div>
                 <div class="mail">
-                    {% if entry.mail == '[]' %}
-                    {% else %}
+                    {% if entry.mail %}
                         {{ entry.mail|lower }}
+                    {% else %}
+                        Не определено
                     {% endif %}
                 </div>
             </div>
