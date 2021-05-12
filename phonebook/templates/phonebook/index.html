@@ -102,6 +102,8 @@
                     </li>
                     <li>
                         <a href="{{ request.path }}status/?user={{ entry.distinguishedName }}&state={% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}disable{% else %}enable{% endif %}">{% if entry.userAccountControl == 512 or entry.userAccountControl == 66048 %}Disable{% else %}Enable{% endif %}</a>
+                    </li>
+                    <li>
                         {% if entry.lockoutTime.value %}
                             {% if entry.lockoutTime.value == zero_lock_datetime %}
                             {% else %}
