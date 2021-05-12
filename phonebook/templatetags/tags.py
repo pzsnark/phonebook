@@ -2,7 +2,6 @@ from django import template
 from django.template.defaultfilters import stringfilter
 
 register = template.Library()
-logger.add('debug.log', format='{time:DD-MM-YYYY HH:mm} {level} {message}', level='DEBUG', rotation='100 KB', compression='zip')
 
 
 @register.filter
