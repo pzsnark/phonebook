@@ -6,8 +6,8 @@
 <header>
 </header>
 <main>
-    {% if all_records %}
-        {% for record in all_records %}
+    {% if page_obj %}
+        {% for record in page_obj %}
             <div class="wrapper">
                 {{ record.ipaddress }} {{ record.hostname }} {{ record.http_referer }} {{ record.date }}
             </div>
@@ -15,6 +15,21 @@
     {% else %}
         <div class="wrapper">Контекст не найден</div>
     {% endif %}
+    <div class="pagination container">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            {% endif %}
+        </span>
+    </div>
     <br>
     <div class="wrapper">Всего записей: {{ all_records|length }}</div>
     <div class="wrapper">Из них уникальных: {{ unique_records|length }}</div>

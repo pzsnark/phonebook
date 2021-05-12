@@ -177,10 +177,9 @@ def create_ad_user(request):
 @login_required()
 def visit_log_view(request):
     context = get_visit_log()
-    paginator = Paginator(context, 25)
+    paginator = Paginator(context['all_records'], 10)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context.update()
-
+    context['page_obj'] = page_obj
     return render(request, 'phonebook/visit_log.html', context)

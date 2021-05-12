@@ -21,7 +21,6 @@
     {% if user.username == 'filippov' %}
         <ul>
             <li><a href="{% url 'admin:index' %}">Админ панель</a></li>
-            <li><a href="#">Изменить пароль</a></li>
             <li>Всего посещений: {{ all_records|length }}</li>
             <li>Уникальных: {{ unique_records|length }}</li>
             <li><a href="{% url 'phonebook:visit_log_view' %}">Журнал</a></li>

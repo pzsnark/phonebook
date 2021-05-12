@@ -32,7 +32,7 @@ def visit_log(request):
 
 
 def get_visit_log():
-    all_records = VisitLog.objects.all()
+    all_records = VisitLog.objects.all().order_by('date')
     unique_records = VisitLog.objects.order_by().values('ipaddress').distinct()
     visit_counts = {'all_records': all_records, 'unique_records': unique_records}
     return visit_counts
