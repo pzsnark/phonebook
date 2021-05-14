@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Сайт{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'phonebook/css/style.css' %}">
+    {% block css %}{% endblock %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
@@ -23,7 +24,7 @@
             <li><a href="{% url 'admin:index' %}">Админ панель</a></li>
             <li>Всего посещений: {{ all_records|length }}</li>
             <li>Уникальных: {{ unique_records|length }}</li>
-            <li><a href="{% url 'phonebook:visit_log_view' %}">Журнал</a></li>
+            <li><a href="{% url 'actionlog:actionlog_view' %}">Журнал</a></li>
         </ul>
     {% endif %}
 </div>

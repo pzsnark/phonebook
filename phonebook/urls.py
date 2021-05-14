@@ -9,5 +9,4 @@ urlpatterns = [
     path('users/', views.users, name='users'),
     path('status/', views.status, name='status'),
     path('create', views.create_ad_user, name='create'),
-    path('visit_log', views.visit_log_view, name='visit_log_view')
 ]

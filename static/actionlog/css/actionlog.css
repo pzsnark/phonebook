@@ -1,0 +1,20 @@
+.step-links {
+    display: block;
+    margin: 0 auto;
+}
+
+.logview-hostname {
+    min-width: 100px;
+}
+
+.logview-user {
+    min-width: 100px;
+}
+
+.logview-referer {
+    min-width: 400px;
+}
+
+.logview-date {
+    min-width: 150px;
+}

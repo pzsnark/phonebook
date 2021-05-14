@@ -56,7 +56,7 @@
     <p class="result">
         {% if result %}
             {% if result == 'success' %}
-                Создан пользователь с логином <span class="success">{{ account_name }}</span>
+                Создан пользователь с логином <span class="success">{{ account_name }}</span>. Отправлено писем: {{ result_send_mail }}
             {% elif result == 'entryAlreadyExists' or result == '' %}
                 Ошибка: <span class="warning">Пользователь уже существует</span>
             {% else %}

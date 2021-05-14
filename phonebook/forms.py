@@ -35,6 +35,6 @@ class CreateADUserForm(forms.Form):
     department = forms.CharField(label='Отдел', max_length=100, required=None)
     location = forms.CharField(label='Местоположение', max_length=100, required=None)
     email = forms.EmailField(label='Email', max_length=100, required=None)
-    phone = forms.CharField(label='Внутренний телефон', max_length=100, required=None)
+    phone = forms.CharField(label='Внутренний телефон', max_length=4, required=None)
     mobile = forms.CharField(label='Сотовый телефон', max_length=12, required=None)
     company = forms.ChoiceField(choices=COMPANY_CHOICES, label='Организация')

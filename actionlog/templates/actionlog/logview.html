@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Журнал посещений{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'actionlog/css/actionlog.css' %}">{% endblock %}
 
 {% block content %}
 <header>
@@ -9,7 +11,12 @@
     {% if page_obj %}
         {% for record in page_obj %}
             <div class="wrapper">
-                {{ record.ipaddress }} {{ record.hostname }} {{ record.http_referer }} {{ record.date }}
+                <div class="container">
+                    <div class="logview-hostname" title="{{ record.ipaddress }}">{{ record.hostname }}</div>
+                    <div class="logview-user">{{ record.user }}</div>
+                    <div class="logview-referer">{{ record.http_referer|truncatechars:60 }}</div>
+                    <div class="logview-date">{{ record.date }}</div>
+                </div>
             </div>
         {% endfor %}
     {% else %}
@@ -31,7 +38,7 @@
         </span>
     </div>
     <br>
-    <div class="wrapper">Всего записей: {{ all_records|length }}</div>
-    <div class="wrapper">Из них уникальных: {{ unique_records|length }}</div>
+    <div class="container">Всего записей: {{ all_records|length }}</div>
+    <div class="container">Из них уникальных: {{ unique_records|length }}</div>
 </main>
 {% endblock %}

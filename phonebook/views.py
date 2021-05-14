@@ -1,3 +1,4 @@
+from smtplib import SMTPAuthenticationError, SMTPDataError
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -8,11 +9,11 @@ import os
 import datetime
 import pytz
 from .forms import CreateADUserForm
-from .utils import get_value, clear_dict, visit_log, get_visit_log
-from django.core.paginator import Paginator
+from .utils import get_value, clear_dict
+from django.core.mail import send_mass_mail
 
 
-from phonebook_django.settings import CACHE_TTL
+from phonebook_django.settings import CACHE_TTL, RECIPIENT_LIST
 
 AD_SEARCH_TREE = 'dc=gk,dc=local'
 AD_SERVER = os.environ.get('AD_SERVER')
@@ -39,9 +40,6 @@ def init_connection(search_string):
 
 
 def index(request):
-    visit_log(request)
-    visit = get_visit_log()
-
     selection = []
     all_users = init_connection(search_query['person_company_active']).entries
     sort = request.GET.get('sort')
@@ -61,7 +59,7 @@ def index(request):
         'company': company,
         'zero_lock_datetime': zero_lock_datetime,
     }
-    context.update(visit)
+    # context.update(visit)
 
     if len(selection) == 0:
         context['entries'] = all_users
@@ -165,21 +163,29 @@ def create_ad_user(request):
             # enable user & require change password
             conn.modify(dn, {'userAccountControl': [('MODIFY_REPLACE', 512)], 'pwdLastSet': [('MODIFY_REPLACE', 0)]})
 
-            # conn.unbind()
+            result_send_mail = int()
+            message_text = f'Создан пользователь {display_name},' \
+                           f' с почтовым адресом {email}.' \
+                           f' Телефон: {phone},' \
+                           f' Мобильный: {mobile}'
+            message = ('Справочник пользователей', message_text, 'it@avsst.ru', RECIPIENT_LIST)
+            if result['description'] == 'success':
+                try:
+                    result_send_mail = send_mass_mail((message,), fail_silently=False)
+                except SMTPAuthenticationError as error:
+                    result_send_mail = error
+                except SMTPDataError as error:
+                    result_send_mail = error
+
+            conn.unbind()
             return render(request, 'phonebook/create_ad_user.html',
-                          {'result': result['description'], 'account_name': account_name, 'form': form})
+                          {
+                              'result': result['description'],
+                              'result_send_mail': result_send_mail,
+                              'account_name': account_name,
+                              'form': form,
+                          })
     else:
         form = CreateADUserForm()
 
     return render(request, 'phonebook/create_ad_user.html', {'form': form})
-
-
-@login_required()
-def visit_log_view(request):
-    context = get_visit_log()
-    paginator = Paginator(context['all_records'], 10)
-
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context['page_obj'] = page_obj
-    return render(request, 'phonebook/visit_log.html', context)
