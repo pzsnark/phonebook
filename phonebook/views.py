@@ -11,6 +11,7 @@ import pytz
 from .forms import CreateADUserForm
 from .utils import get_value, clear_dict
 from django.core.mail import send_mass_mail
+from actionlog.utils import get_actionlog
 
 
 from phonebook_django.settings import CACHE_TTL, RECIPIENT_LIST
@@ -59,7 +60,8 @@ def index(request):
         'company': company,
         'zero_lock_datetime': zero_lock_datetime,
     }
-    # context.update(visit)
+
+    context.update(get_actionlog())
 
     if len(selection) == 0:
         context['entries'] = all_users
