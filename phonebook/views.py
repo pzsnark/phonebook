@@ -44,8 +44,7 @@ def init_connection(search_string):
 
 def index(request):
     selection = []
-    all_users = init_connection(search_query['person_company_active']).entries
-
+    all_ad_users = init_connection(search_query['person_company_active']).entries
 
     sort = request.GET.get('sort')
     company = request.GET.get('company')
@@ -54,10 +53,10 @@ def index(request):
 
     if sort is None:
         sort = 'displayName'
-    all_users.sort(key=lambda x: get_value(x, sort))
+    all_ad_users.sort(key=lambda x: get_value(x, sort))
 
-    for entry in all_users:
-        if entry.company.value == company:
+    for entry in all_ad_users:
+        if entry.company == company:
             selection.append(entry)
 
     context = {
@@ -68,7 +67,7 @@ def index(request):
     context.update(get_actionlog())
 
     if len(selection) == 0:
-        context['entries'] = all_users
+        context['entries'] = all_ad_users
     else:
         context['entries'] = selection
 
