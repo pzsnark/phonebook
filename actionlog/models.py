@@ -11,3 +11,7 @@ class ActionLog(models.Model):
 
     def __str__(self):
         return str(self.ipaddress)
+
+    class Meta:
+        verbose_name = 'Запись'
+        verbose_name_plural = 'Записи'

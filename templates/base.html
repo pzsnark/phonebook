@@ -21,10 +21,14 @@
 <div class="hidden">
     {% if user.username == 'filippov' %}
         <ul>
-            <li><a href="{% url 'admin:index' %}">Админ панель</a></li>
             <li>Всего посещений: {{ all_records|length }}</li>
             <li>Уникальных: {{ unique_records|length }}</li>
             <li><a href="{% url 'actionlog:actionlog_view' %}">Журнал</a></li>
+        </ul>
+    {% endif %}
+    {% if user.is_staff %}
+        <ul>
+            <li><a href="{% url 'admin:index' %}">Админ панель</a></li>
         </ul>
     {% endif %}
 </div>

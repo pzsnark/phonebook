@@ -26,3 +26,5 @@ urlpatterns = [
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
 ]
+
+admin.site.site_header = 'Портал ГК'

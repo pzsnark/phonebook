@@ -14,7 +14,7 @@ class Select(forms.Select):
         return option
 
 
-class CreateADUserForm(forms.Form):
+class CreateForm(forms.Form):
 
     COMPANY_CHOICES = [
         ('', 'Выберите организацию'),

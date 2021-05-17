@@ -3,15 +3,17 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.views.generic import View, DetailView
 from django.views.decorators.cache import cache_page
 from ldap3 import Connection, Server, SUBTREE, ALL_ATTRIBUTES, MODIFY_REPLACE
 import os
 import datetime
 import pytz
-from .forms import CreateADUserForm
+from .forms import CreateForm
 from .utils import get_value, clear_dict
 from django.core.mail import send_mass_mail
 from actionlog.utils import get_actionlog
+from .models import Entry, Company
 
 
 from phonebook_django.settings import CACHE_TTL, RECIPIENT_LIST
@@ -43,6 +45,8 @@ def init_connection(search_string):
 def index(request):
     selection = []
     all_users = init_connection(search_query['person_company_active']).entries
+
+
     sort = request.GET.get('sort')
     company = request.GET.get('company')
     utc = pytz.utc
@@ -121,7 +125,7 @@ def status(request):
 @login_required()
 def create_ad_user(request):
     if request.method == 'POST':
-        form = CreateADUserForm(request.POST)
+        form = CreateForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
@@ -188,6 +192,38 @@ def create_ad_user(request):
                               'form': form,
                           })
     else:
-        form = CreateADUserForm()
+        form = CreateForm()
 
     return render(request, 'phonebook/create_ad_user.html', {'form': form})
+
+
+# class CreateEntry(View):
+#     template_name = 'phonebook/create_entry.html'
+#     form = CreateForm
+#
+#     def get(self, request):
+#         context = {'form': self.form}
+#         return render(request=request, template_name=self.template_name, context=context)
+#
+#     def post(self, request):
+#         form = CreateForm(data=request.POST)
+#         registered = False
+#         if form.is_valid():
+#             entry = Entry
+#             entry.first_name = form.cleaned_data.get('first_name')
+#             entry.last_name = form.cleaned_data.get('last_name')
+#             entry.middle_name = form.cleaned_data.get('middle_name')
+#             entry.title = form.cleaned_data.get('title')
+#             entry.department = form.cleaned_data.get('department')
+#             entry.location = form.cleaned_data.get('location')
+#             entry.email = form.cleaned_data.get('email')
+#             entry.phone = form.cleaned_data.get('phone')
+#             entry.mobile = form.cleaned_data.get('mobile')
+#             entry.company = form.cleaned_data.get('company')
+#
+#             entry.save()
+#             registered = True
+#             return render(request, 'phonebook/create_entry.html', {'registered': registered})
+#         else:
+#             return render(request, 'phonebook/create_entry.html',
+#                           {'form': form, 'registered': registered})
