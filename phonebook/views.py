@@ -66,6 +66,10 @@ def index(request):
 
     context.update(get_actionlog())
 
+    db = Entry.objects.all()
+    for d in db:
+        print(d.sn.value)
+
     if len(selection) == 0:
         context['entries'] = all_ad_users
     else:

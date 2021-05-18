@@ -28,11 +28,12 @@ class Entry(models.Model):
     def __str__(self):
         return f'{self.sn} {self.givenName}'
 
-    # @property
-    # def value
+    @property
+    def value(self) -> object:
+        return self.__dict__.get(self.attr_name)
 
     @property
-    def displayName(self):
+    def displayname(self):
         return f'{self.sn} {self.givenName} {self.middle_name}'
 
     # def save(self, force_insert=False, force_update=False, using=None,
