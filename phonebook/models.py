@@ -28,6 +28,9 @@ class Entry(models.Model):
     def __str__(self):
         return f'{self.sn} {self.givenName}'
 
+    # @property
+    # def value
+
     @property
     def displayName(self):
         return f'{self.sn} {self.givenName} {self.middle_name}'
