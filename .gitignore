@@ -5,4 +5,4 @@ settings.py
 db.sqlite3
 
 /debug.log
-/phonebook/test.py
+/phonebook/testing.py
