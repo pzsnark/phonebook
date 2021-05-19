@@ -33,11 +33,6 @@ def init_connection(search_string):
     return conn
 
 
-dictionary = {'name': 'Bob', 'age': '12'}
-print(dictionary)
-obj_name = namedtuple('Struct', dictionary.keys())(*dictionary.values())
-print(obj_name)
-
 response = init_connection('(physicalDeliveryOfficeName=207)')
 response_json = response.response_to_json()
 str_json = json.loads(response_json)

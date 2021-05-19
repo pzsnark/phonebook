@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django import template
 from django.template.defaultfilters import stringfilter
 
@@ -25,3 +27,9 @@ def format_description(string):  # добавить проверку строк�
     else:
         string = 'Вход на ' + string[0] + ' ' + string[1] + ' в ' + string[2]
     return string
+
+
+@register.filter
+@stringfilter
+def convert_str_date(value):
+    return str(datetime.strptime(value, '%Y-%m-%d %H:%M:%S%z').strftime('%d.%m.%Y'))

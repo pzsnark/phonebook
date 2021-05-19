@@ -4,8 +4,8 @@ from ldap3.core.exceptions import LDAPCursorAttributeError
 # получаем значение из объекта
 def get_value(obj, field):
     try:
-        result = getattr(obj, field).value
-    except LDAPCursorAttributeError:
+        result = getattr(obj, field)
+    except AttributeError:
         result = ''
     return result
 
@@ -14,6 +14,6 @@ def get_value(obj, field):
 def clear_dict(dictionary):
     dict_copy = dictionary.copy()
     for key in dict_copy:
-        if dictionary.get(key) == '':
+        if not dictionary.get(key):
             dictionary.pop(key)
     return dictionary

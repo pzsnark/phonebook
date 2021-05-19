@@ -2,6 +2,8 @@
 {% load format_mobile from tags %}
 {% load format_groups from tags %}
 {% load format_description from tags %}
+{% load convert_str_date  from tags %}
+
 
 {% block title %}Телефонная книга{% endblock %}
 
@@ -92,11 +94,13 @@
                         {% endif %}
                     </li>
                     <li>    
-                        Создана: {{ entry.whenCreated.value|date:"d.m.Y" }}
+                        Создана: {{ entry.whenCreated|convert_str_date }}
                     </li>
                     <li>
                         {% if entry.description %}
-                            {{ entry.description|format_description }}
+                            {% for desc in entry.description %}
+                                {{ desc|format_description }}
+                            {% endfor %}
                         {% endif %}
                     </li>
                     <li>

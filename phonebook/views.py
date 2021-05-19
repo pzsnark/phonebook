@@ -1,9 +1,9 @@
+from collections import namedtuple
 from smtplib import SMTPAuthenticationError, SMTPDataError
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.views.generic import View, DetailView
 from django.views.decorators.cache import cache_page
 from ldap3 import Connection, Server, SUBTREE, ALL_ATTRIBUTES, MODIFY_REPLACE
 import os
@@ -14,14 +14,15 @@ from .utils import get_value, clear_dict
 from django.core.mail import send_mass_mail
 from actionlog.utils import get_actionlog
 from .models import Entry, Company
-
-
+import json
 from phonebook_django.settings import CACHE_TTL, RECIPIENT_LIST
 
+from .conf import ATTRIBUTES, AD_USER, AD_PASSWORD, AD_SERVER
+
 AD_SEARCH_TREE = 'dc=gk,dc=local'
-AD_SERVER = os.environ.get('AD_SERVER')
-AD_USER = os.environ.get('AD_USER')
-AD_PASSWORD = os.environ.get('AD_PASSWORD')
+# AD_SERVER = os.environ.get('AD_SERVER')
+# AD_USER = os.environ.get('AD_USER')
+# AD_PASSWORD = os.environ.get('AD_PASSWORD')
 SERVER = Server(AD_SERVER, port=636, use_ssl=True)
 search_query = {
     'person_company': '(&(objectCategory=Person)(&(company=*)))',
@@ -37,14 +38,25 @@ def init_connection(search_string):
     conn.search(AD_SEARCH_TREE,
                 search_string,
                 SUBTREE,
-                attributes=[ALL_ATTRIBUTES]
+                attributes=ATTRIBUTES
                 )
     return conn
 
 
 def index(request):
-    selection = []
-    all_ad_users = init_connection(search_query['person_company_active']).entries
+    person_list_filter_by_company = []
+    # all_ad_users = init_connection(search_query['person_company_active']).entries
+
+    response = init_connection(search_query['person_company_active'])
+    response_json = response.response_to_json()
+    str_json = json.loads(response_json)
+
+    person_list = []
+    for entry in str_json['entries']:
+        person = entry['attributes']
+        clear_dict(person)
+        person = namedtuple('PersonObject', person.keys())(*person.values())
+        person_list.append(person)
 
     sort = request.GET.get('sort')
     company = request.GET.get('company')
@@ -53,11 +65,11 @@ def index(request):
 
     if sort is None:
         sort = 'displayName'
-    all_ad_users.sort(key=lambda x: get_value(x, sort))
+    person_list.sort(key=lambda x: get_value(x, sort))
 
-    for entry in all_ad_users:
-        if entry.company == company:
-            selection.append(entry)
+    for person in person_list:
+        if person.company == company:
+            person_list_filter_by_company.append(person)
 
     context = {
         'company': company,
@@ -66,14 +78,10 @@ def index(request):
 
     context.update(get_actionlog())
 
-    db = Entry.objects.all()
-    for d in db:
-        print(d.sn.value)
-
-    if len(selection) == 0:
-        context['entries'] = all_ad_users
+    if len(person_list_filter_by_company) == 0:
+        context['entries'] = person_list
     else:
-        context['entries'] = selection
+        context['entries'] = person_list_filter_by_company
 
     return render(request, 'phonebook/index.html', context)
 
@@ -160,7 +168,7 @@ def create_ad_user(request):
                 'company': company,
             }
 
-            clear_dict(fields)
+            # clear_dict(fields)
 
             conn = init_connection(search_query['person_company_active'])
 
