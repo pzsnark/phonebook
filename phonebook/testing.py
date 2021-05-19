@@ -2,6 +2,13 @@ import ldap3
 from ldap3 import Connection, Server, SUBTREE, ALL_ATTRIBUTES, Entry, Reader, ObjectDef, AttrDef
 import os
 import json
+from types import SimpleNamespace
+from collections import namedtuple
+
+from models import Entry
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'phonebook.settings')
+
 AD_SEARCH_TREE = 'dc=gk,dc=local'
 AD_SERVER = os.environ.get('AD_SERVER')
 AD_USER = os.environ.get('AD_USER')
@@ -21,18 +28,29 @@ def init_connection(search_string):
     conn.search(AD_SEARCH_TREE,
                 search_string,
                 SUBTREE,
-                attributes=[ALL_ATTRIBUTES]
+                attributes=['cn', 'displayName', 'memberOf']
                 )
     return conn
 
 
-example = init_connection('(&(objectCategory=Person)(&(company=PNL)))')
-person_json = example.response_to_json()
-print(type(person_json))
+dictionary = {'name': 'Bob', 'age': '12'}
+print(dictionary)
+obj_name = namedtuple('Struct', dictionary.keys())(*dictionary.values())
+print(obj_name)
 
-entries = json.loads(person_json)
-for entry in entries['entries']:
-    print(entry['attributes'].keys())
+response = init_connection('(physicalDeliveryOfficeName=207)')
+response_json = response.response_to_json()
+str_json = json.loads(response_json)
+
+person_list = []
+for entry in str_json['entries']:
+    person = entry['attributes']
+    person = namedtuple('Struct', person.keys())(*person.values())
+    person_list.append(person)
+
+for person in person_list:
+    print(person.displayName)
+
 
 # conn = Connection(SERVER, user=AD_USER, password=AD_PASSWORD)
 # conn.bind()

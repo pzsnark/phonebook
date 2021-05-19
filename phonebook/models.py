@@ -1,3 +1,5 @@
+import json
+
 from django.db import models
 
 
@@ -29,15 +31,12 @@ class Entry(models.Model):
         return f'{self.sn} {self.givenName}'
 
     @property
-    def value(self) -> object:
-        return self.__dict__.get(self.attr_name)
-
-    @property
     def displayname(self):
         return f'{self.sn} {self.givenName} {self.middle_name}'
 
-    # def save(self, force_insert=False, force_update=False, using=None,
-    #          update_fields=None):
+    @classmethod
+    def to_json(cls):
+        return json.dumps(Entry.__dict__)
 
     class Meta:
         verbose_name = 'Запись'
