@@ -10,7 +10,7 @@ import os
 import datetime
 import pytz
 from .forms import CreateForm
-from .utils import get_value, clear_dict
+from .utils import get_value, clear_dict, list_to_object
 from django.core.mail import send_mass_mail
 from actionlog.utils import get_actionlog
 from .models import Entry, Company
@@ -49,14 +49,23 @@ def index(request):
 
     response = init_connection(search_query['person_company_active'])
     response_json = response.response_to_json()
-    str_json = json.loads(response_json)
+    ad_person_list = json.loads(response_json)
 
     person_list = []
-    for entry in str_json['entries']:
-        person = entry['attributes']
-        clear_dict(person)
-        person = namedtuple('PersonObject', person.keys())(*person.values())
-        person_list.append(person)
+
+    # добавляем пользователй из AD
+    for entry in ad_person_list['entries']:
+        ad_person = entry['attributes']
+        clear_dict(ad_person)
+        ad_person = list_to_object(ad_person)
+        person_list.append(ad_person)
+
+    # добавляем пользователей из DB
+    model_person_list = Entry.model_to_json()
+    for model_person in model_person_list:
+        clear_dict(model_person)
+        model_person = list_to_object(model_person)
+        person_list.append(model_person)
 
     sort = request.GET.get('sort')
     company = request.GET.get('company')

@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from ldap3.core.exceptions import LDAPCursorAttributeError
 
 
@@ -17,3 +19,18 @@ def clear_dict(dictionary):
         if not dictionary.get(key):
             dictionary.pop(key)
     return dictionary
+
+
+def clear_dict_none(dictionary):
+    """Чистим словарь от ключей со значением None"""
+    dict_copy = dictionary.copy()
+    for key in dict_copy:
+        if dictionary.get(key) is None:
+            dictionary.pop(key)
+    return dictionary
+
+
+# создаем объект из списка
+def list_to_object(array):
+    obj = namedtuple('PersonObject', array.keys())(*array.values())
+    return obj

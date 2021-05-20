@@ -1,13 +1,15 @@
 from django.contrib import admin
 from django.contrib.admin.options import BaseModelAdmin
 
+from . import forms
 from .models import Entry, Company
+from .forms import EntryForm
 
 
 @admin.register(Entry)
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('sn', 'givenName', 'middle_name', 'telephoneNumber', 'mobile', 'mail')
-    # readonly_fields = ('')
+    form = EntryForm
+    list_display = ('displayName', 'title', 'physicalDeliveryOfficeName', 'telephoneNumber', 'mobile', 'mail', 'company')
 
 
 @admin.register(Company)

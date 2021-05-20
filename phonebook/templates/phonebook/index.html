@@ -93,8 +93,9 @@
                             {% endfor %}
                         {% endif %}
                     </li>
-                    <li>    
-                        Создана: {{ entry.whenCreated|convert_str_date }}
+                    <li>{% if entry.whenCreated %}
+                            Создана: {{ entry.whenCreated|convert_str_date }}
+                        {% endif %}
                     </li>
                     <li>
                         {% if entry.description %}
