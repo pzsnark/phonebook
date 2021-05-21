@@ -13,16 +13,13 @@ from .forms import CreateForm
 from .utils import get_value, clear_dict, list_to_object
 from django.core.mail import send_mass_mail
 from actionlog.utils import get_actionlog
-from .models import Entry, Company
+from .models import Entry
 import json
 from phonebook_django.settings import CACHE_TTL, RECIPIENT_LIST
 
 from .conf import ATTRIBUTES, AD_USER, AD_PASSWORD, AD_SERVER
 
 AD_SEARCH_TREE = 'dc=gk,dc=local'
-# AD_SERVER = os.environ.get('AD_SERVER')
-# AD_USER = os.environ.get('AD_USER')
-# AD_PASSWORD = os.environ.get('AD_PASSWORD')
 SERVER = Server(AD_SERVER, port=636, use_ssl=True)
 search_query = {
     'person_company': '(&(objectCategory=Person)(&(company=*)))',
@@ -204,7 +201,7 @@ def create_ad_user(request):
                     result_send_mail = error
 
             conn.unbind()
-            return render(request, 'phonebook/create_ad_user.html',
+            return render(request, 'phonebook/create_entry.html',
                           {
                               'result': result['description'],
                               'result_send_mail': result_send_mail,
@@ -214,7 +211,7 @@ def create_ad_user(request):
     else:
         form = CreateForm()
 
-    return render(request, 'phonebook/create_ad_user.html', {'form': form})
+    return render(request, 'phonebook/create_entry.html', {'form': form})
 
 
 # class CreateEntry(View):

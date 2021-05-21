@@ -11,6 +11,12 @@ class Company(models.Model):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def list_value(cls):
+        all_entries = list(Company.objects.values())
+        entries = [tuple(d.values() for d in all_entries)]
+        return entries
+
     class Meta:
         verbose_name = 'Организация'
         verbose_name_plural = 'Организации'
@@ -31,10 +37,6 @@ class Entry(models.Model):
 
     def __str__(self):
         return f'{self.sn} {self.givenName}'
-
-    # @property
-    # def displayName(self):
-    #     return f'{self.sn} {self.givenName} {self.middle_name}'
 
     @classmethod
     def model_to_json(cls):

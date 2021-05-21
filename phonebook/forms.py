@@ -1,6 +1,6 @@
 from django import forms
 from .models import Entry
-from.conf import COMPANY
+from .utils import company_list
 
 
 class Select(forms.Select):
@@ -26,13 +26,18 @@ class CreateForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=100, required=None)
     phone = forms.CharField(label='Внутренний телефон', max_length=4, required=None)
     mobile = forms.CharField(label='Сотовый телефон', max_length=12, required=None)
-    company = forms.ChoiceField(choices=COMPANY, label='Организация')
+    company = forms.ChoiceField(choices=company_list(), label='Организация')
 
 
 class EntryForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(EntryForm, self).__init__(*args, **kwargs)
+        self.fields['company'].choices = company_list()
+
     model = Entry
 
-    company = forms.ChoiceField(choices=COMPANY, label='Организация')
+    company = forms.ChoiceField(choices=company_list(), label='Организация')
     displayName = forms.CharField(label='ФИО', max_length=100, required=None, widget=forms.HiddenInput())
 
     def clean(self):

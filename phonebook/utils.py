@@ -1,4 +1,5 @@
 from collections import namedtuple
+from .models import Company
 
 from ldap3.core.exceptions import LDAPCursorAttributeError
 
@@ -34,3 +35,9 @@ def clear_dict_none(dictionary):
 def list_to_object(array):
     obj = namedtuple('PersonObject', array.keys())(*array.values())
     return obj
+
+
+def company_list():
+    all_entries = list(Company.objects.values())
+    entries = [(d['slug'], d['name']) for d in all_entries]
+    return entries

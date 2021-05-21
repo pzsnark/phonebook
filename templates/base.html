@@ -9,15 +9,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
-<div class="container expand">
 {% block auth %}
-    {% if user.is_authenticated %}
-        Пользователь: {{ user.last_name }} {{ user.first_name}} (<a href="{% url 'logout' %}">Выйти</a>)
-    {% else %}
-        <a href="{% url 'login' %}">Войти</a>
-    {% endif %}
+    <div class="container expand">
+        {% if user.is_authenticated %}
+            Пользователь: {{ user.last_name }} {{ user.first_name}} (<a href="{% url 'logout' %}">Выйти</a>)
+        {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+        {% endif %}
+    </div>
 {% endblock %}
-</div>
 <div class="hidden">
     {% if user.username == 'filippov' %}
         <ul>
