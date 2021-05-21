@@ -17,6 +17,10 @@ class Select(forms.Select):
 
 class CreateForm(forms.Form):
 
+    def __init__(self, *args, **kwargs):
+        super(CreateForm, self).__init__(*args, **kwargs)
+        self.fields['company'].choices = company_list()
+
     last_name = forms.CharField(label='Фамилия', max_length=100)
     first_name = forms.CharField(label='Имя', max_length=100)
     middle_name = forms.CharField(label='Отчество', max_length=100)
