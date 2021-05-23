@@ -16,7 +16,6 @@ from actionlog.utils import get_actionlog
 from .models import Entry
 import json
 from phonebook_django.settings import CACHE_TTL
-
 from .conf import ATTRIBUTES, AD_USER, AD_PASSWORD, AD_SERVER, RECIPIENT_LIST
 
 AD_SEARCH_TREE = 'dc=gk,dc=local'

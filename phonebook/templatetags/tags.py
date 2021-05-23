@@ -32,4 +32,6 @@ def format_description(string):  # добавить проверку строк�
 @register.filter
 @stringfilter
 def convert_str_date(value):
+    value = value.replace('+00:00', '+0000')
     return str(datetime.strptime(value, '%Y-%m-%d %H:%M:%S%z').strftime('%d.%m.%Y'))
+# 2021-05-21 05:51:30+00:00
