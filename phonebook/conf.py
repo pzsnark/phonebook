@@ -1,5 +1,3 @@
-#from .utils import company_list
-
 AD_SERVER = 'dc1.gk.local'
 AD_USER = 'ldap-bot'
 AD_PASSWORD = '12345678'
@@ -21,17 +19,17 @@ ATTRIBUTES = [
     'distinguishedName',
 ]
 
-COMPANY = [
-    ('', 'Выберите организацию'),
-    ('ABZ', 'АБЗ №1'),
-    ('AVS', 'Автоволгастрой'),
-    ('SMT', 'СМУ Тольятти'),
-    ('SMS', 'СМУ Самара'),
-    ('ODS', 'Облдорстрой'),
-    ('PRS', 'Перспектива'),
-    ('PNL', 'ПНЛ'),
-    ('AVN', 'Авангард'),
-]
+# COMPANY = [
+#     ('', 'Выберите организацию'),
+#     ('ABZ', 'АБЗ №1'),
+#     ('AVS', 'Автоволгастрой'),
+#     ('SMT', 'СМУ Тольятти'),
+#     ('SMS', 'СМУ Самара'),
+#     ('ODS', 'Облдорстрой'),
+#     ('PRS', 'Перспектива'),
+#     ('PNL', 'ПНЛ'),
+#     ('AVN', 'Авангард'),
+# ]
 
 RECIPIENT_LIST = ['filippov@avsst.ru', 'dok@abz1.ru']
 

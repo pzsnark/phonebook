@@ -1,7 +1,6 @@
 from django import forms
 from .models import Entry
 from .utils import company_list
-from .conf import COMPANY
 
 
 class Select(forms.Select):
@@ -42,7 +41,7 @@ class EntryForm(forms.ModelForm):
 
     model = Entry
 
-    company = forms.ChoiceField(choices=COMPANY, label='Организация')
+    company = forms.ChoiceField(choices=company_list(), label='Организация')
     displayName = forms.CharField(label='ФИО', max_length=100, required=None, widget=forms.HiddenInput())
 
     def clean(self):

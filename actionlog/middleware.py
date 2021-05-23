@@ -7,11 +7,12 @@ class ActionLogMiddleware(MiddlewareMixin):
     def process_request(self, request):
         # print(request.META)
         ipaddress = request.META.get('REMOTE_ADDR')
+        print(type(ipaddress))
         user = request.user
         try:
             hostname = (socket.gethostbyaddr(ipaddress))[0]
         except socket.herror:
-            return None, None, None
+            hostname = ipaddress
         http_referer = request.META.get('HTTP_REFERER')
         visit = ActionLog(ipaddress=ipaddress, hostname=hostname, http_referer=http_referer, user=user)
         visit.save()
