@@ -1,6 +1,7 @@
 from django import forms
 from .models import Entry
 from .utils import company_list
+from .conf import COMPANY
 
 
 class Select(forms.Select):
@@ -30,7 +31,7 @@ class CreateForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=100, required=None)
     phone = forms.CharField(label='Внутренний телефон', max_length=4, required=None)
     mobile = forms.CharField(label='Сотовый телефон', max_length=12, required=None)
-    company = forms.ChoiceField(choices=company_list(), label='Организация')
+    company = forms.ChoiceField(choices=COMPANY, label='Организация')
 
 
 class EntryForm(forms.ModelForm):
