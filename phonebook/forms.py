@@ -31,7 +31,7 @@ class CreateForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=100, required=None)
     phone = forms.CharField(label='Внутренний телефон', max_length=4, required=None)
     mobile = forms.CharField(label='Сотовый телефон', max_length=12, required=None)
-    company = forms.ChoiceField(choices=COMPANY, label='Организация')
+    company = forms.ChoiceField(choices=company_list(), label='Организация')
 
 
 class EntryForm(forms.ModelForm):
@@ -42,7 +42,7 @@ class EntryForm(forms.ModelForm):
 
     model = Entry
 
-    company = forms.ChoiceField(choices=company_list(), label='Организация')
+    company = forms.ChoiceField(choices=COMPANY, label='Организация')
     displayName = forms.CharField(label='ФИО', max_length=100, required=None, widget=forms.HiddenInput())
 
     def clean(self):

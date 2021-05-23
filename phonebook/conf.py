@@ -1,4 +1,4 @@
-from .utils import company_list
+#from .utils import company_list
 
 AD_SERVER = 'dc1.gk.local'
 AD_USER = 'ldap-bot'
@@ -32,3 +32,6 @@ COMPANY = [
     ('PNL', 'ПНЛ'),
     ('AVN', 'Авангард'),
 ]
+
+RECIPIENT_LIST = ['filippov@avsst.ru', 'dok@abz1.ru']
+

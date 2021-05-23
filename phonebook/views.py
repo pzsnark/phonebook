@@ -15,9 +15,9 @@ from django.core.mail import send_mass_mail
 from actionlog.utils import get_actionlog
 from .models import Entry
 import json
-from phonebook_django.settings import CACHE_TTL, RECIPIENT_LIST
+from phonebook_django.settings import CACHE_TTL
 
-from .conf import ATTRIBUTES, AD_USER, AD_PASSWORD, AD_SERVER
+from .conf import ATTRIBUTES, AD_USER, AD_PASSWORD, AD_SERVER, RECIPIENT_LIST
 
 AD_SEARCH_TREE = 'dc=gk,dc=local'
 SERVER = Server(AD_SERVER, port=636, use_ssl=True)
