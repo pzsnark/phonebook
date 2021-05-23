@@ -1,4 +1,5 @@
 import json
+from django.utils import timezone
 
 from django.db import models
 from django.core import serializers
@@ -34,6 +35,7 @@ class Entry(models.Model):
     telephoneNumber = models.CharField('Внутренний', max_length=4, null=True, blank=True)
     mobile = models.CharField('Мобильный', max_length=15, null=True, blank=True)
     company = models.CharField('Компания', max_length=255, default=None)
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f'{self.sn} {self.givenName}'

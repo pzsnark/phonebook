@@ -22,15 +22,6 @@ def clear_dict(dictionary):
     return dictionary
 
 
-def clear_dict_none(dictionary):
-    """Чистим словарь от ключей со значением None"""
-    dict_copy = dictionary.copy()
-    for key in dict_copy:
-        if dictionary.get(key) is None:
-            dictionary.pop(key)
-    return dictionary
-
-
 # создаем объект из списка
 def list_to_object(array):
     obj = namedtuple('PersonObject', array.keys())(*array.values())

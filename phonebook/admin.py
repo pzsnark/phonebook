@@ -12,6 +12,7 @@ class EntryAdmin(admin.ModelAdmin):
     list_display = (
         'displayName', 'title', 'physicalDeliveryOfficeName', 'telephoneNumber', 'mobile', 'mail', 'company'
     )
+    readonly_fields = ('date',)
 
 
 @admin.register(Company)

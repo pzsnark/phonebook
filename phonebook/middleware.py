@@ -1,11 +1,6 @@
 from django.utils.deprecation import MiddlewareMixin
-# from loguru import logger
-# from .models import VisitLog
-#
-#
-# logger.add('debug.log')
-#
-#
+
+
 # class VisitLogMiddleware(MiddlewareMixin):
 #     def process_request(self, request):
 #         ipaddress = request.META.get('REMOTE_ADDR')
