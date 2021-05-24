@@ -32,4 +32,3 @@ ATTRIBUTES = [
 # ]
 
 RECIPIENT_LIST = ['filippov@avsst.ru', 'dok@abz1.ru']
-

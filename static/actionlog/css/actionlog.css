@@ -4,15 +4,15 @@
 }
 
 .logview-hostname {
-    min-width: 100px;
+    min-width: 200px;
 }
 
 .logview-user {
-    min-width: 100px;
+    min-width: 150px;
 }
 
 .logview-referer {
-    min-width: 400px;
+    min-width: 300px;
 }
 
 .logview-date {
