@@ -30,7 +30,6 @@ def init_connection(search_string):
     conn = Connection(SERVER, user=AD_USER, password=AD_PASSWORD)
     conn.bind()
 
-    # (!(UserAccountControl:1.2.840.113556.1.4.803 := 2)) активные учетные записи
     conn.search(AD_SEARCH_TREE,
                 search_string,
                 SUBTREE,
@@ -41,22 +40,20 @@ def init_connection(search_string):
 
 def index(request):
     person_list_filter_by_company = []
-    # all_ad_users = init_connection(search_query['person_company_active']).entries
+    person_list = []
 
     response = init_connection(search_query['person_company_active'])
     response_json = response.response_to_json()
     ad_person_list = json.loads(response_json)
 
-    person_list = []
-
-    # добавляем пользователй из AD
+    # append users from AD
     for entry in ad_person_list['entries']:
         ad_person = entry['attributes']
         clear_dict(ad_person)
         ad_person = list_to_object(ad_person)
         person_list.append(ad_person)
 
-    # добавляем пользователей из DB
+    # append users from DB
     model_person_list = Entry.model_to_json()
     for model_person in model_person_list:
         clear_dict(model_person)
@@ -89,30 +86,6 @@ def index(request):
         context['entries'] = person_list_filter_by_company
 
     return render(request, 'phonebook/index.html', context)
-
-
-@login_required()
-def users(request):
-    sort = request.GET.get('sort')
-    selection = []
-    all_users = init_connection(search_query['person_company']).entries
-    utc = pytz.utc
-    zero_lock_datetime = utc.localize(datetime.datetime(1601, 1, 1))
-
-    if sort is None:
-        sort = 'displayName'
-    all_users.sort(key=lambda x: get_value(x, sort))
-
-    for entry in all_users:
-        if entry.userAccountControl == 514 or 66050:
-            selection.append(entry)
-
-    context = {
-        'entries': selection,
-        'all_users': all_users,
-        'zero_lock_datetime': zero_lock_datetime,
-    }
-    return render(request, 'phonebook/users.html', context)
 
 
 @login_required()
@@ -173,9 +146,11 @@ def create_ad_user(request):
                 'company': company,
             }
 
-            # clear_dict(fields)
+            clear_dict(fields)
 
-            conn = init_connection(search_query['person_company_active'])
+            # conn = init_connection(search_query['person_company_active'])
+            conn = Connection(SERVER, user=AD_USER, password=AD_PASSWORD)
+            conn.bind()
 
             # create user
             conn.add(dn, ['organizationalPerson', 'person', 'top', 'user'], fields)
@@ -184,12 +159,14 @@ def create_ad_user(request):
             conn.extend.microsoft.modify_password(dn, 'Qq123456')
             # enable user & require change password
             conn.modify(dn, {'userAccountControl': [('MODIFY_REPLACE', 512)], 'pwdLastSet': [('MODIFY_REPLACE', 0)]})
+            conn.unbind()
 
             result_send_mail = int()
             message_text = f'Создан пользователь {display_name},' \
                            f' с почтовым адресом {email}.' \
                            f' Телефон: {phone},' \
-                           f' Мобильный: {mobile}'
+                           f' Мобильный: {mobile}'\
+                           f' Создал: {request.user.username}'
             message = ('Справочник пользователей', message_text, 'it@avsst.ru', RECIPIENT_LIST)
             if result['description'] == 'success':
                 try:
@@ -199,7 +176,6 @@ def create_ad_user(request):
                 except SMTPDataError as error:
                     result_send_mail = error
 
-            conn.unbind()
             return render(request, 'phonebook/create_entry.html',
                           {
                               'result': result['description'],
@@ -211,35 +187,3 @@ def create_ad_user(request):
         form = CreateForm()
 
     return render(request, 'phonebook/create_entry.html', {'form': form})
-
-
-# class CreateEntry(View):
-#     template_name = 'phonebook/create_entry.html'
-#     form = CreateForm
-#
-#     def get(self, request):
-#         context = {'form': self.form}
-#         return render(request=request, template_name=self.template_name, context=context)
-#
-#     def post(self, request):
-#         form = CreateForm(data=request.POST)
-#         registered = False
-#         if form.is_valid():
-#             entry = Entry
-#             entry.first_name = form.cleaned_data.get('first_name')
-#             entry.last_name = form.cleaned_data.get('last_name')
-#             entry.middle_name = form.cleaned_data.get('middle_name')
-#             entry.title = form.cleaned_data.get('title')
-#             entry.department = form.cleaned_data.get('department')
-#             entry.location = form.cleaned_data.get('location')
-#             entry.email = form.cleaned_data.get('email')
-#             entry.phone = form.cleaned_data.get('phone')
-#             entry.mobile = form.cleaned_data.get('mobile')
-#             entry.company = form.cleaned_data.get('company')
-#
-#             entry.save()
-#             registered = True
-#             return render(request, 'phonebook/create_entry.html', {'registered': registered})
-#         else:
-#             return render(request, 'phonebook/create_entry.html',
-#                           {'form': form, 'registered': registered})

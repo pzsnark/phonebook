@@ -1,4 +1,4 @@
-AD_SERVER = 'dc1.gk.local'
+AD_SERVER = 'dc2.gk.local'
 AD_USER = 'ldap-bot'
 AD_PASSWORD = '12345678'
 ATTRIBUTES = [
@@ -29,6 +29,7 @@ ATTRIBUTES = [
 #     ('PRS', 'Перспектива'),
 #     ('PNL', 'ПНЛ'),
 #     ('AVN', 'Авангард'),
+#     ('D84', 'ДЭП84'),
 # ]
 
 RECIPIENT_LIST = ['filippov@avsst.ru', 'dok@abz1.ru']
