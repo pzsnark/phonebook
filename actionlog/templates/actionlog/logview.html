@@ -13,8 +13,8 @@
             <div class="wrapper">
                 <div class="container">
                     <div class="logview-hostname" title="{{ record.ipaddress }}">{{ record.hostname }}</div>
-                    <div class="logview-user">{{ record.user }}</div>
-                    <div class="logview-referer" title="{{ record.http_referer }}">{{ record.http_referer|truncatechars:40 }}</div>
+                    <div class="logview-user">{{ record.username }}</div>
+                    <div class="logview-referer" title="{{ record.path }}">{{ record.path|truncatechars:40 }}</div>
                     <div class="logview-date">{{ record.date }}</div>
                 </div>
             </div>

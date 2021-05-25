@@ -8,17 +8,17 @@ class ActionLogMiddleware(MiddlewareMixin):
     def process_request(self, request):
         ipaddress = request.META.get('REMOTE_ADDR')
         if request.user.is_authenticated:
-            user = request.user.username
+            username = request.user.username
         else:
-            user = 'Anon'
+            username = ''
 
         try:
             hostname = (socket.gethostbyaddr(ipaddress))[0]
         except socket.herror:
             hostname = ipaddress
 
-        http_referer = request.META.get('HTTP_REFERER')
-        visit = ActionLog(ipaddress=ipaddress, hostname=hostname, http_referer=http_referer, user=user)
+        path = request.get_full_path()
+        visit = ActionLog(ipaddress=ipaddress, hostname=hostname, path=path, username=username)
 
         if visit.ipaddress not in EXCLUDE_IPADDR:
             visit.save()

@@ -19,7 +19,7 @@
     </div>
 {% endblock %}
 <div class="hidden">
-    {% if user.username == 'filippov' %}
+    {% if user.is_staff %}
         <ul>
             <li>Всего посещений: {{ all_records|length }}</li>
             <li>Уникальных: {{ unique_records|length }}</li>
