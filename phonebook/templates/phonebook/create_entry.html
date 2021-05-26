@@ -54,10 +54,9 @@
         </ul>
     </form>
     <p class="result">
-        {% if result %}
+        {% if result %}Файл: <a href="{{ file_url }}">скачать</a>
             {% if result == 'success' %}
                 Создан пользователь с логином <span class="success">{{ account_name }}</span>. Отправлено писем: {{ result_send_mail }}
-                Файл: {{ file_url }}
             {% elif result == 'entryAlreadyExists' or result == '' %}
                 Ошибка: <span class="warning">Пользователь уже существует</span>
             {% else %}

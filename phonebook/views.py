@@ -1,3 +1,4 @@
+import tempfile
 from smtplib import SMTPAuthenticationError, SMTPDataError
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -180,16 +181,18 @@ def create_ad_user(request):
             #         result_send_mail = error
 
             # pdf
+            # file = object
             html_string = render_to_string('phonebook/pdf.html', {'form': form})
             html = HTML(string=html_string)
-            file = html.write_pdf()
+            pdf = html.write_pdf()
+            output = tempfile.NamedTemporaryFile()
+            output.write(pdf)
+            output.seek(0)
 
-            folder = 'media/phonebook/pdf/'
-            print(type(default_storage))
-            fs = default_storage(location=folder)
-            file.name = account_name
-            filename = default_storage.save(file.name, file)
-            file_url = fs.url(filename)
+            name = 'phonebook/pdf/' + account_name + '.pdf'
+            path = default_storage.save(name, output)
+            output.close()
+            file_url = default_storage.url(path)
 
             return render(request, 'phonebook/create_entry.html',
                           {
