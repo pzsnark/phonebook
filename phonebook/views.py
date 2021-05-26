@@ -1,9 +1,9 @@
-from collections import namedtuple
 from smtplib import SMTPAuthenticationError, SMTPDataError
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page
 from ldap3 import Connection, Server, SUBTREE, ALL_ATTRIBUTES, MODIFY_REPLACE
 import os
@@ -17,6 +17,9 @@ from .models import Entry
 import json
 from phonebook_django.settings import CACHE_TTL
 from .conf import ATTRIBUTES, AD_USER, AD_PASSWORD, AD_SERVER, RECIPIENT_LIST
+from weasyprint import HTML
+from django.core.files.storage import default_storage
+
 
 AD_SEARCH_TREE = 'dc=gk,dc=local'
 SERVER = Server(AD_SERVER, port=636, use_ssl=True)
@@ -161,27 +164,40 @@ def create_ad_user(request):
             conn.modify(dn, {'userAccountControl': [('MODIFY_REPLACE', 512)], 'pwdLastSet': [('MODIFY_REPLACE', 0)]})
             conn.unbind()
 
-            result_send_mail = int()
-            message_text = f'Создан пользователь {display_name},' \
-                           f' с почтовым адресом {email}.' \
-                           f' Телефон: {phone},' \
-                           f' Мобильный: {mobile}'\
-                           f' Создал: {request.user.username}'
-            message = ('Справочник пользователей', message_text, 'it@avsst.ru', RECIPIENT_LIST)
-            if result['description'] == 'success':
-                try:
-                    result_send_mail = send_mass_mail((message,), fail_silently=False)
-                except SMTPAuthenticationError as error:
-                    result_send_mail = error
-                except SMTPDataError as error:
-                    result_send_mail = error
+            # result_send_mail = int()
+            # message_text = f'Создан пользователь {display_name},' \
+            #                f' с почтовым адресом {email}.' \
+            #                f' Телефон: {phone},' \
+            #                f' Мобильный: {mobile}'\
+            #                f' Создал: {request.user.username}'
+            # message = ('Справочник пользователей', message_text, 'it@avsst.ru', RECIPIENT_LIST)
+            # if result['description'] == 'success':
+            #     try:
+            #         result_send_mail = send_mass_mail((message,), fail_silently=False)
+            #     except SMTPAuthenticationError as error:
+            #         result_send_mail = error
+            #     except SMTPDataError as error:
+            #         result_send_mail = error
+
+            # pdf
+            html_string = render_to_string('phonebook/pdf.html', {'form': form})
+            html = HTML(string=html_string)
+            file = html.write_pdf()
+
+            folder = 'media/phonebook/pdf/'
+            print(type(default_storage))
+            fs = default_storage(location=folder)
+            file.name = account_name
+            filename = default_storage.save(file.name, file)
+            file_url = fs.url(filename)
 
             return render(request, 'phonebook/create_entry.html',
                           {
                               'result': result['description'],
-                              'result_send_mail': result_send_mail,
+                              # 'result_send_mail': result_send_mail,
                               'account_name': account_name,
                               'form': form,
+                              'file_url': file_url,
                           })
     else:
         form = CreateForm()
