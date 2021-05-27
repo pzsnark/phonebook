@@ -181,8 +181,17 @@ def create_ad_user(request):
             #         result_send_mail = error
 
             # pdf
-            # file = object
-            html_string = render_to_string('phonebook/pdf.html', {'form': form})
+
+            context = {
+                'last_name': last_name,
+                'first_name': first_name,
+                'middle_name': middle_name,
+                'email': email,
+                'login': account_name,
+            }
+            person = list_to_object(context)
+
+            html_string = render_to_string('phonebook/pdf.html', {'person': person})
             html = HTML(string=html_string)
             pdf = html.write_pdf()
             output = tempfile.NamedTemporaryFile()

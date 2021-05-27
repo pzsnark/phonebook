@@ -31,6 +31,7 @@
             <li><a href="{% url 'admin:index' %}">Админ панель</a></li>
         </ul>
     {% endif %}
+{% block aboard %}
 </div>
     <div class="aboard">
         <ul>
@@ -51,14 +52,17 @@
             {% endif %}
         </ul>
     </div>
-{% block content %}
-
 {% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block footer %}
 <footer>
     <div>Developed by Филиппов Константин</div>
     <div>Последнее обновление: {{ last_update }}</div>
     <div>Обратная связь: <a href="mailto:filippov@avsst.ru">filippov@avsst.ru</a></div>
 </footer>
+{% endblock %}
 
 <script type="text/javascript">
 $(document).ready(function(){

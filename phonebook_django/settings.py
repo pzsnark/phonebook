@@ -215,8 +215,8 @@ AUTHENTICATION_BACKENDS = [
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'o.it.abz1org@gmail.com'
-EMAIL_HOST_PASSWORD = 'Asd123ffg'
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 RECIPIENT_LIST = ['filippov@avsst.ru', 'dok@abz1.ru']
 
-LAST_UPDATE = '25.05.2021'
+LAST_UPDATE = '27.05.2021'
