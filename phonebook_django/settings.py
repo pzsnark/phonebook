@@ -205,18 +205,18 @@ AUTHENTICATION_BACKENDS = [
             'django.contrib.auth.backends.ModelBackend',
 ]
 
-# EMAIL_USE_SSL = True
-# EMAIL_HOST = 'smtp.yandex.ru'
-# EMAIL_PORT = 465
-# EMAIL_HOST_USER = 'it@avsst.ru'
-# EMAIL_HOST_PASSWORD = 'sngntjwudptztzop'
-# RECIPIENT_LIST = ['filippov@avsst.ru', 'dok@abz1.ru']
-
 EMAIL_USE_SSL = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_HOST_USER = 'it@avsst.ru'
+EMAIL_HOST_PASSWORD = 'sngntjwudptztzop'
 RECIPIENT_LIST = ['filippov@avsst.ru', 'dok@abz1.ru']
+
+# EMAIL_USE_SSL = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+# RECIPIENT_LIST = ['filippov@avsst.ru', 'dok@abz1.ru']
 
 LAST_UPDATE = '27.05.2021'
