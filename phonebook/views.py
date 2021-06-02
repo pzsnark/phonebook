@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import tempfile
 from smtplib import SMTPAuthenticationError, SMTPDataError
 from django.urls import reverse
@@ -202,7 +203,7 @@ def create_ad_user(request):
             path = default_storage.save(name, output)
             output.close()
             file_url = default_storage.url(path)
-
+            os.stat
             return render(request, 'phonebook/create_entry.html',
                           {
                               'result': result['description'],
