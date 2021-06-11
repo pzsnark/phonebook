@@ -1,26 +1,21 @@
 # -*- coding: utf-8 -*-
-import tempfile
 from smtplib import SMTPAuthenticationError, SMTPDataError
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page
 from ldap3 import Connection, Server, SUBTREE, ALL_ATTRIBUTES, MODIFY_REPLACE
-import os
 import datetime
 import pytz
 from .forms import CreateForm
-from .utils import get_value, clear_dict, list_to_object
+from .utils import get_value, clear_dict, list_to_object, check_db_connection
 from django.core.mail import send_mass_mail
 from actionlog.utils import get_actionlog
 from .models import Entry
 import json
 from phonebook_django.settings import CACHE_TTL
 from .conf import ATTRIBUTES, AD_USER, AD_PASSWORD, AD_SERVER, RECIPIENT_LIST
-from weasyprint import HTML
-from django.core.files.storage import default_storage
 
 
 AD_SEARCH_TREE = 'dc=gk,dc=local'
@@ -44,53 +39,57 @@ def init_connection(search_string):
 
 
 def index(request):
-    person_list_filter_by_company = []
-    person_list = []
+    error_connection = check_db_connection()
+    if error_connection is None:
+        person_list_filter_by_company = []
+        person_list = []
 
-    response = init_connection(search_query['person_company_active'])
-    response_json = response.response_to_json()
-    ad_person_list = json.loads(response_json)
+        response = init_connection(search_query['person_company_active'])
+        response_json = response.response_to_json()
+        ad_person_list = json.loads(response_json)
 
-    # append users from AD
-    for entry in ad_person_list['entries']:
-        ad_person = entry['attributes']
-        clear_dict(ad_person)
-        ad_person = list_to_object(ad_person)
-        person_list.append(ad_person)
+        # append users from AD
+        for entry in ad_person_list['entries']:
+            ad_person = entry['attributes']
+            clear_dict(ad_person)
+            ad_person = list_to_object(ad_person)
+            person_list.append(ad_person)
 
-    # append users from DB
-    model_person_list = Entry.model_to_json()
-    for model_person in model_person_list:
-        clear_dict(model_person)
-        model_person = list_to_object(model_person)
-        person_list.append(model_person)
+        # append users from DB
+        model_person_list = Entry.model_to_json()
+        for model_person in model_person_list:
+            clear_dict(model_person)
+            model_person = list_to_object(model_person)
+            person_list.append(model_person)
 
-    sort = request.GET.get('sort')
-    company = request.GET.get('company')
-    utc = pytz.utc
-    zero_lock_datetime = utc.localize(datetime.datetime(1601, 1, 1))
+        sort = request.GET.get('sort')
+        company = request.GET.get('company')
+        utc = pytz.utc
+        zero_lock_datetime = utc.localize(datetime.datetime(1601, 1, 1))
 
-    if sort is None:
-        sort = 'displayName'
-    person_list.sort(key=lambda x: get_value(x, sort))
+        if sort is None:
+            sort = 'displayName'
+        person_list.sort(key=lambda x: get_value(x, sort))
 
-    for person in person_list:
-        if person.company == company:
-            person_list_filter_by_company.append(person)
+        for person in person_list:
+            if person.company == company:
+                person_list_filter_by_company.append(person)
 
-    context = {
-        'company': company,
-        'zero_lock_datetime': zero_lock_datetime,
-    }
+        context = {
+            'company': company,
+            'zero_lock_datetime': zero_lock_datetime,
+        }
 
-    context.update(get_actionlog())
+        context.update(get_actionlog())
 
-    if len(person_list_filter_by_company) == 0:
-        context['entries'] = person_list
+        if len(person_list_filter_by_company) == 0:
+            context['entries'] = person_list
+        else:
+            context['entries'] = person_list_filter_by_company
+
+        return render(request, 'phonebook/index.html', context)
     else:
-        context['entries'] = person_list_filter_by_company
-
-    return render(request, 'phonebook/index.html', context)
+        return HttpResponse(error_connection)
 
 
 @login_required()
@@ -153,7 +152,6 @@ def create_ad_user(request):
 
             clear_dict(fields)
 
-            # conn = init_connection(search_query['person_company_active'])
             conn = Connection(SERVER, user=AD_USER, password=AD_PASSWORD)
             conn.bind()
 
@@ -166,51 +164,27 @@ def create_ad_user(request):
             conn.modify(dn, {'userAccountControl': [('MODIFY_REPLACE', 512)], 'pwdLastSet': [('MODIFY_REPLACE', 0)]})
             conn.unbind()
 
-            # result_send_mail = int()
-            # message_text = f'Создан пользователь {display_name},' \
-            #                f' с почтовым адресом {email}.' \
-            #                f' Телефон: {phone},' \
-            #                f' Мобильный: {mobile}'\
-            #                f' Создал: {request.user.username}'
-            # message = ('Справочник пользователей', message_text, 'it@avsst.ru', RECIPIENT_LIST)
-            # if result['description'] == 'success':
-            #     try:
-            #         result_send_mail = send_mass_mail((message,), fail_silently=False)
-            #     except SMTPAuthenticationError as error:
-            #         result_send_mail = error
-            #     except SMTPDataError as error:
-            #         result_send_mail = error
+            result_send_mail = int()
+            message_text = f'Создан пользователь {display_name},' \
+                           f' с почтовым адресом {email}.' \
+                           f' Телефон: {phone},' \
+                           f' Мобильный: {mobile}'\
+                           f' Создал: {request.user.username}'
+            message = ('Справочник пользователей', message_text, 'it@avsst.ru', RECIPIENT_LIST)
+            if result['description'] == 'success':
+                try:
+                    result_send_mail = send_mass_mail((message,), fail_silently=False)
+                except SMTPAuthenticationError as error:
+                    result_send_mail = error
+                except SMTPDataError as error:
+                    result_send_mail = error
 
-            # pdf
-
-            context = {
-                'last_name': last_name,
-                'first_name': first_name,
-                'middle_name': middle_name,
-                'email': email,
-                'login': account_name,
-            }
-            person = list_to_object(context)
-
-            html_string = render_to_string('phonebook/pdf.html', {'person': person})
-            html = HTML(string=html_string)
-            pdf = html.write_pdf()
-            output = tempfile.NamedTemporaryFile()
-            output.write(pdf)
-            output.seek(0)
-
-            name = 'phonebook/pdf/' + account_name + '.pdf'
-            path = default_storage.save(name, output)
-            output.close()
-            file_url = default_storage.url(path)
-            os.stat
             return render(request, 'phonebook/create_entry.html',
                           {
                               'result': result['description'],
-                              # 'result_send_mail': result_send_mail,
+                              'result_send_mail': result_send_mail,
                               'account_name': account_name,
                               'form': form,
-                              'file_url': file_url,
                           })
     else:
         form = CreateForm()

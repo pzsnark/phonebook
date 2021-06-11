@@ -1,5 +1,6 @@
 from collections import namedtuple
 from .models import Company
+from django.db import connection, OperationalError
 
 from ldap3.core.exceptions import LDAPCursorAttributeError
 
@@ -32,3 +33,11 @@ def company_list():
     all_entries = list(Company.objects.values())
     entries = [(d['slug'], d['name']) for d in all_entries]
     return entries
+
+
+def check_db_connection():
+    try:
+        connection.ensure_connection()
+    except OperationalError as e:
+        msg = f'Could not connect to database: {e}'
+        return msg
